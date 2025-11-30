@@ -11,10 +11,30 @@ defmodule VbvWeb.UserLive.Settings do
     <Layouts.app flash={@flash} current_scope={@current_scope}>
       <div class="text-center">
         <.header>
-          Account Settings
-          <:subtitle>Manage your account email address and password settings</:subtitle>
+          User Account Settings
+          <:subtitle>
+            Manage your account, personal information, email address and password settings
+          </:subtitle>
         </.header>
       </div>
+
+      <.form for={@email_form} id="settings_form" phx-submit="save_settings">
+        <.input
+          field={@email_form[:first_name]}
+          type="text"
+          label="First Name"
+          autocomplete="first-name"
+        />
+        <.input
+          field={@email_form[:last_name]}
+          type="text"
+          label="Last Name"
+          autocomplete="last-name"
+        />
+        <.button variant="primary">Save Settings</.button>
+      </.form>
+
+      <div class="divider" />
 
       <.form for={@email_form} id="email_form" phx-submit="update_email" phx-change="validate_email">
         <.input
@@ -106,6 +126,18 @@ defmodule VbvWeb.UserLive.Settings do
       |> to_form()
 
     {:noreply, assign(socket, email_form: email_form)}
+  end
+
+  def handle_event("save_settings", params, socket) do
+    %{"user" => user_params} = params
+    user = socket.assigns.current_scope.user
+    case Users.update_user_settings(user, user_params) do
+      {:ok, _user} ->
+        {:noreply, socket |> put_flash(:info, "Settings updated successfully.")}
+
+      {:error, changeset} ->
+        {:noreply, assign(socket, :email_form, to_form(changeset, action: :insert))}
+    end
   end
 
   def handle_event("update_email", params, socket) do

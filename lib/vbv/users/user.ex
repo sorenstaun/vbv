@@ -7,6 +7,8 @@ defmodule Vbv.Users.User do
     field :password, :string, virtual: true, redact: true
     field :hashed_password, :string, redact: true
     field :confirmed_at, :utc_datetime
+    field :first_name, :string
+    field :last_name, :string
     field :authenticated_at, :utc_datetime, virtual: true
 
     timestamps(type: :utc_datetime)

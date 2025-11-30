@@ -112,6 +112,17 @@ defmodule Vbv.Users do
   end
 
   @doc """
+  Update user settings such as first and last name.
+  """
+  def update_user_settings(user, attrs) do
+    user
+    |> Ecto.Changeset.cast(attrs, [:first_name, :last_name])
+    |> Ecto.Changeset.validate_length(:first_name, max: 50)
+    |> Ecto.Changeset.validate_length(:last_name, max: 50)
+    |> Repo.update()
+  end
+
+  @doc """
   Updates the user email using the given token.
 
   If the token matches, the user email is updated and the token is deleted.

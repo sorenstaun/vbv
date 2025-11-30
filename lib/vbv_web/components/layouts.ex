@@ -4,7 +4,6 @@ defmodule VbvWeb.Layouts do
   used by your application.
   """
   use VbvWeb, :html
-  import VbvWeb.Gettext
 
   # Embed all files in layouts/* within this module.
   # The default root.html.heex file contains the HTML
