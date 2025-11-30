@@ -393,14 +393,14 @@ defmodule VbvWeb.CoreComponents do
     """
   end
 
-#  attr :name, :string, required: true
-#  attr :class, :string, default: "size-4"
+  #  attr :name, :string, required: true
+  #  attr :class, :string, default: "size-4"
 
-#  def icon(%{name: "hero-" <> _} = assigns) do
-#    ~H"""
-#    <span class={[@name, @class]} />
-#    """
-#  end
+  #  def icon(%{name: "hero-" <> _} = assigns) do
+  #    ~H"""
+  #    <span class={[@name, @class]} />
+  #    """
+  #  end
 
   ## JS Commands
 

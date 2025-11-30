@@ -1,0 +1,31 @@
+<Layouts.app flash={@flash} current_scope={@current_scope}>
+  <.header>
+    Task state {@task_state.id}
+    <:subtitle>This is a task_state record from your database.</:subtitle>
+    <:actions>
+      <.button navigate={~p"/task_states"}>
+        <.icon name="hero-arrow-left" />
+      </.button>
+      <.button variant="primary" navigate={~p"/task_states/#{@task_state}/edit?return_to=show"}>
+        <.icon name="hero-pencil-square" /> Edit task_state
+      </.button>
+    </:actions>
+  </.header>
+
+  <.list>
+    <:item title="Name">{@task_state.name}</:item>
+    <:item title="Colour">
+      <div class="flex items-center">
+        <span
+          role="img"
+          aria-label={"Colour: #{@task_state.colour}"}
+          class="w-6 h-6 rounded-full border"
+          style={"background-color: #{@task_state.colour}"}
+        />
+      </div>
+    </:item>
+    <:item title="Icon">{@task_state.icon}
+    <.icon name={"hero-" <> @task_state.icon} size="lg" class="text-gray-700 dark:text-gray-300" />
+    </:item>
+  </.list>
+</Layouts.app>

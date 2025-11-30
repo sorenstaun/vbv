@@ -131,6 +131,7 @@ defmodule VbvWeb.UserLive.Settings do
   def handle_event("save_settings", params, socket) do
     %{"user" => user_params} = params
     user = socket.assigns.current_scope.user
+
     case Users.update_user_settings(user, user_params) do
       {:ok, _user} ->
         {:noreply, socket |> put_flash(:info, "Settings updated successfully.")}

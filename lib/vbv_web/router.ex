@@ -22,6 +22,9 @@ defmodule VbvWeb.Router do
 
     get "/", PageController, :home
 
+    resources "/tasks", TaskController
+    resources "/task_categories", TaskCategoryController
+    resources "/task_states", TaskStateController
   end
 
   # Other scopes may use custom stacks.

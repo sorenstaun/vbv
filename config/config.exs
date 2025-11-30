@@ -46,7 +46,7 @@ config :vbv, Vbv.Mailer, adapter: Swoosh.Adapters.Local
 
 config :tailwind,
   version: "4.0.9",
-   default: [
+  default: [
     args: ~w(
       --input=assets/css/app.css
       --output=priv/static/assets/app.css

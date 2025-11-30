@@ -1,0 +1,10 @@
+<.form :let={f} for={@changeset} action={@action}>
+  <.input field={f[:name]} type="text" label="Name" />
+  <.input field={f[:colour]} type="color" label="Colour" />
+  <.input field={f[:icon]} type="text" label="Icon" />
+  <p>See available icons at <a href="https://heroicons.com/" class="text-blue-600 underline" target="_blank">heroicons.com</a></p>
+  <footer>
+    <.button variant="primary">Save Task state</.button>
+    <.button :if={@return_to} href={@return_to}>Cancel</.button>
+  </footer>
+</.form>
