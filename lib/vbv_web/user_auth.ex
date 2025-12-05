@@ -1,6 +1,8 @@
 defmodule VbvWeb.UserAuth do
   use VbvWeb, :verified_routes
 
+  require IEx
+
   import Plug.Conn
   import Phoenix.Controller
 

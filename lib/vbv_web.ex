@@ -72,8 +72,6 @@ defmodule VbvWeb do
       import Phoenix.Controller,
         only: [get_csrf_token: 0, view_module: 1, view_template: 1]
 
-      import PetalComponents
-
       # Include general helpers for rendering HTML
       unquote(html_helpers())
     end
@@ -87,17 +85,6 @@ defmodule VbvWeb do
       import VbvWeb.CoreComponents
       import VbvWeb.Gettext
 
-      # Import PetalComponents so components like <.p> and <.accordion> are available in all templates
-      import PetalComponents
-
-      # PetalComponents defines components in submodules (Typography, Accordion, Icon, etc).
-      # Import the submodules that provide the HEEx function components used in templates.
-      import PetalComponents.Typography,
-        only: [p: 1, h1: 1, h2: 1, h3: 1, h4: 1, h5: 1, prose: 1, ol: 1, ul: 1]
-
-      import PetalComponents.Accordion, only: [accordion: 1]
-      import PetalComponents.Icon, only: [icon: 1]
-
       # Alias Layouts so <Layouts.app> works in templates
       alias VbvWeb.Layouts
 
@@ -107,44 +94,6 @@ defmodule VbvWeb do
       # Routes generation with the ~p sigil
       unquote(verified_routes())
 
-      # Petal Components
-      defmodule PC do
-        defdelegate accordion(assigns), to: PetalComponents.Accordion
-        defdelegate alert(assigns), to: PetalComponents.Alert
-        defdelegate avatar(assigns), to: PetalComponents.Avatar
-        defdelegate badge(assigns), to: PetalComponents.Badge
-        defdelegate breadcrumbs(assigns), to: PetalComponents.Breadcrumbs
-        defdelegate button(assigns), to: PetalComponents.Button
-        defdelegate icon_button(assigns), to: PetalComponents.Button
-        defdelegate card(assigns), to: PetalComponents.Card
-        defdelegate container(assigns), to: PetalComponents.Container
-        defdelegate dropdown(assigns), to: PetalComponents.Dropdown
-        defdelegate form_label(assigns), to: PetalComponents.Form
-        defdelegate field(assigns), to: PetalComponents.Field
-        defdelegate icon(assigns), to: PetalComponents.Icon
-        defdelegate input(assigns), to: PetalComponents.Input
-        defdelegate a(assigns), to: PetalComponents.Link
-        defdelegate spinner(assigns), to: PetalComponents.Loading
-        defdelegate modal(assigns), to: PetalComponents.Modal
-        defdelegate pagination(assigns), to: PetalComponents.Pagination
-        defdelegate progress(assigns), to: PetalComponents.Progress
-        defdelegate rating(assigns), to: PetalComponents.Rating
-        defdelegate slide_over(assigns), to: PetalComponents.SlideOver
-        defdelegate table(assigns), to: PetalComponents.Table
-        defdelegate td(assigns), to: PetalComponents.Table
-        defdelegate tr(assigns), to: PetalComponents.Table
-        defdelegate th(assigns), to: PetalComponents.Table
-        defdelegate tabs(assigns), to: PetalComponents.Tabs
-        defdelegate h1(assigns), to: PetalComponents.Typography
-        defdelegate h2(assigns), to: PetalComponents.Typography
-        defdelegate h3(assigns), to: PetalComponents.Typography
-        defdelegate h4(assigns), to: PetalComponents.Typography
-        defdelegate h5(assigns), to: PetalComponents.Typography
-        defdelegate p(assigns), to: PetalComponents.Typography
-        defdelegate prose(assigns), to: PetalComponents.Typography
-        defdelegate ol(assigns), to: PetalComponents.Typography
-        defdelegate ul(assigns), to: PetalComponents.Typography
-      end
     end
   end
 

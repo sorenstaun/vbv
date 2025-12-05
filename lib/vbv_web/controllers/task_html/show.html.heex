@@ -3,11 +3,11 @@
     Task {@task.id}
     <:subtitle>This is a task record from your database.</:subtitle>
     <:actions>
-      <.button navigate={~p"/tasks"}>
-        <.icon name="hero-arrow-left" />
+      <.button navigate={~p"/tasks"}>Back
+        <!--.icon name="hero-arrow-left" /-->
       </.button>
       <.button variant="primary" navigate={~p"/tasks/#{@task}/edit?return_to=show"}>
-        <.icon name="hero-pencil-square" /> Edit task
+        Edit task
       </.button>
     </:actions>
   </.header>

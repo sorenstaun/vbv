@@ -4,5 +4,11 @@
     <:subtitle>Use this form to manage task records in your database.</:subtitle>
   </.header>
 
-  <.task_form changeset={@changeset} action={~p"/tasks"} return_to={~p"/tasks"} />
+  <.task_form
+    changeset={@changeset}
+    action={~p"/tasks"}
+    return_to={~p"/tasks"}
+    categories={@categories}
+    states={@states}
+  />
 </Layouts.app>

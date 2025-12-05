@@ -4,10 +4,10 @@
     <:subtitle>This is a task_state record from your database.</:subtitle>
     <:actions>
       <.button navigate={~p"/task_states"}>
-        <.icon name="hero-arrow-left" />
+        Back
       </.button>
       <.button variant="primary" navigate={~p"/task_states/#{@task_state}/edit?return_to=show"}>
-        <.icon name="hero-pencil-square" /> Edit task_state
+        Edit task_state
       </.button>
     </:actions>
   </.header>
@@ -25,7 +25,7 @@
       </div>
     </:item>
     <:item title="Icon">{@task_state.icon}
-    <.icon name={"hero-" <> @task_state.icon} size="lg" class="text-gray-700 dark:text-gray-300" />
+    <!--.icon name={"hero-" <> @task_state.icon} size="lg" class="text-gray-700 dark:text-gray-300" /-->
     </:item>
   </.list>
 </Layouts.app>

@@ -1,6 +1,6 @@
 <.form :let={f} for={@changeset} action={@action}>
   <.input field={f[:name]} type="text" label="Name" />
-  <.input field={f[:colour]} type="text" label="Colour" />
+  <.input field={f[:colour]} type="color" label="Colour" />
   <.input field={f[:icon]} type="text" label="Icon" />
   <footer>
     <.button variant="primary">Save Task category</.button>

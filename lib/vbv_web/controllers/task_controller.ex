@@ -1,12 +1,13 @@
 defmodule VbvWeb.TaskController do
   use VbvWeb, :controller
 
+  require IEx
   alias Vbv.Tasks
   alias Vbv.Tasks.Task
 
   def index(conn, _params) do
     tasks = Tasks.list_tasks(conn.assigns.current_scope)
-    render(conn, :index, tasks: tasks)
+    render(conn, :index, tasks: tasks, task_state_options: Tasks.task_state_options(conn))
   end
 
   def new(conn, _params) do
@@ -14,10 +15,13 @@ defmodule VbvWeb.TaskController do
       Tasks.change_task(conn.assigns.current_scope, %Task{
         user_id: conn.assigns.current_scope.user.id
       })
+    states = Tasks.task_state_options(conn)
+    categories = Tasks.category_options(conn)
 
-    render(conn, :new, changeset: changeset)
+    render(conn, :new, changeset: changeset, states: states, categories: categories)
   end
 
+  @spec create(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def create(conn, %{"task" => task_params}) do
     case Tasks.create_task(conn.assigns.current_scope, task_params) do
       {:ok, task} ->
@@ -26,7 +30,11 @@ defmodule VbvWeb.TaskController do
         |> redirect(to: ~p"/tasks/#{task}")
 
       {:error, %Ecto.Changeset{} = changeset} ->
-        render(conn, :new, changeset: changeset)
+        render(conn, :new,
+          changeset: changeset,
+          task_state_options: Tasks.task_state_options(conn),
+          category_options: [] # provide real category options here if available
+        )
     end
   end
 
@@ -51,7 +59,12 @@ defmodule VbvWeb.TaskController do
         |> redirect(to: ~p"/tasks/#{task}")
 
       {:error, %Ecto.Changeset{} = changeset} ->
-        render(conn, :edit, task: task, changeset: changeset)
+        render(conn, :edit,
+          task: task,
+          changeset: changeset,
+          task_state_options: Tasks.task_state_options(conn),
+          category_options: [] # provide real category options here if available
+        )
     end
   end
 

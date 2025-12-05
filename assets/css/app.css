@@ -1,7 +1,7 @@
 /* See the Tailwind configuration guide for advanced usage
    https://tailwindcss.com/docs/configuration */
 
-@import "tailwindcss" source(none);
+@import "tailwindcss";
 @source "../css";
 @source "../js";
 @source "../../lib/vbv_web";
@@ -103,15 +103,3 @@
 [data-phx-session], [data-phx-teleported-src] { display: contents }
 
 /* This file is for your main application CSS */
-
-@import "tailwindcss";
-
-@source "../../deps/petal_components/**/*.*ex";
-@import "../../deps/petal_components/assets/default.css";
-
-@import "./colors.css";
-
-@plugin "@tailwindcss/typography";
-@plugin "@tailwindcss/forms";
-
-@plugin "../js/tailwind_heroicons.js";

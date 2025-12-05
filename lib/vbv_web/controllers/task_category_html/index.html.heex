@@ -3,7 +3,7 @@
     Listing Task categories
     <:actions>
       <.button href={~p"/task_categories/new"}>
-        <.icon name="hero-plus" /> New Task category
+        New Task category
       </.button>
     </:actions>
   </.header>
@@ -14,7 +14,16 @@
     row_click={&JS.navigate(~p"/task_categories/#{&1}")}
   >
     <:col :let={task_category} label="Name">{task_category.name}</:col>
-    <:col :let={task_category} label="Colour">{task_category.colour}</:col>
+    <:col :let={task_category} label="Colour">
+      <div class="flex items-center">
+        <span
+          role="img"
+          aria-label={"Colour: #{task_category.colour}"}
+          class="w-6 h-6 rounded-full border"
+          style={"background-color: #{task_category.colour}"}
+        />
+      </div>
+    </:col>
     <:col :let={task_category} label="Icon">{task_category.icon}</:col>
     <:action :let={task_category}>
       <div class="sr-only">

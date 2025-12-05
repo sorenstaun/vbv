@@ -12,6 +12,8 @@ defmodule VbvWeb.TaskHTML do
   attr :changeset, Ecto.Changeset, required: true
   attr :action, :string, required: true
   attr :return_to, :string, default: nil
+  attr :categories, :list, default: []
+  attr :states, :list, default: []
 
   def task_form(assigns)
 end

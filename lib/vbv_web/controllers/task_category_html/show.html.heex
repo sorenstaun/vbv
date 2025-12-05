@@ -4,20 +4,29 @@
     <:subtitle>This is a task_category record from your database.</:subtitle>
     <:actions>
       <.button navigate={~p"/task_categories"}>
-        <.icon name="hero-arrow-left" />
+        <!--.icon name="hero-arrow-left" /-->
       </.button>
       <.button
         variant="primary"
         navigate={~p"/task_categories/#{@task_category}/edit?return_to=show"}
       >
-        <.icon name="hero-pencil-square" /> Edit task_category
+        Edit task_category
       </.button>
     </:actions>
   </.header>
 
   <.list>
     <:item title="Name">{@task_category.name}</:item>
-    <:item title="Colour">{@task_category.colour}</:item>
+    <:item title="Colour">
+      <div class="flex items-center">
+        <span
+          role="img"
+          aria-label={"Colour: #{@task_category.colour}"}
+          class="w-6 h-6 rounded-full border"
+          style={"background-color: #{@task_category.colour}"}
+        />
+      </div>
+    </:item>
     <:item title="Icon">{@task_category.icon}</:item>
   </.list>
 </Layouts.app>

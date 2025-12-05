@@ -27,7 +27,6 @@ defmodule VbvWeb.CoreComponents do
 
   """
   use Phoenix.Component
-  import PetalComponents.Icon, only: [icon: 1]
   use Gettext, backend: VbvWeb.Gettext
 
   alias Phoenix.LiveView.JS
@@ -151,7 +150,7 @@ defmodule VbvWeb.CoreComponents do
   attr :type, :string,
     default: "text",
     values: ~w(checkbox color date datetime-local email file month number password
-               search select tel text textarea time url week)
+               search select tel text textarea time url week radio)
 
   attr :field, Phoenix.HTML.FormField,
     doc: "a form field struct retrieved from the form, for example: @form[:email]"
@@ -221,6 +220,28 @@ defmodule VbvWeb.CoreComponents do
           <option :if={@prompt} value="">{@prompt}</option>
           {Phoenix.HTML.Form.options_for_select(@options, @value)}
         </select>
+      </label>
+      <.error :for={msg <- @errors}>{msg}</.error>
+    </div>
+    """
+  end
+
+  def input(%{type: "radio"} = assigns) do
+    ~H"""
+    <div class="fieldset mb-2">
+      <label>
+        <span :if={@label} class="label mb-1">{@label}</span>
+          <div class="radio-option" :for={{label, value} <- @options}>
+            <input
+              type="radio"
+              name={@name}
+              value={value}
+              checked={Phoenix.HTML.Form.normalize_value("radio", @value) == value}
+              class={@class || "radio"}
+              {@rest}
+            />
+            <label for={Phoenix.HTML.Form.normalize_value("radio", @value)}>{label}</label>
+          </div>
       </label>
       <.error :for={msg <- @errors}>{msg}</.error>
     </div>
@@ -396,11 +417,11 @@ defmodule VbvWeb.CoreComponents do
   #  attr :name, :string, required: true
   #  attr :class, :string, default: "size-4"
 
-  #  def icon(%{name: "hero-" <> _} = assigns) do
-  #    ~H"""
-  #    <span class={[@name, @class]} />
-  #    """
-  #  end
+  def icon(%{name: "hero-" <> _} = assigns) do
+    ~H"""
+    <span class={[@name, @class]} />
+    """
+  end
 
   ## JS Commands
 

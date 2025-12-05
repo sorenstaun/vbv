@@ -84,6 +84,19 @@ defmodule Vbv.Tasks do
     end
   end
 
+
+  def task_state_options(conn) do
+    conn.assigns.current_scope
+    |> Vbv.TaskStates.list_task_states()
+    |> Enum.map(&{&1.name, &1.id})
+  end
+
+  def category_options(conn) do
+    conn.assigns.current_scope
+    |> Vbv.TaskCategories.list_task_categories()
+    |> Enum.map(&{&1.name, &1.id})
+  end
+
   @doc """
   Updates a task.
 

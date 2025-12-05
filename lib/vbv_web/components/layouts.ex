@@ -38,8 +38,8 @@ defmodule VbvWeb.Layouts do
     <header class="navbar px-4 sm:px-6 lg:px-8">
       <div class="flex-1">
         <a href="/" class="flex-1 flex w-fit items-center gap-2">
-          <p class="text-sm font-semibold">Phoenix Test App</p>
-          <span class="text-sm font-semibold">v{Application.spec(:phoenix, :vsn)}</span>
+          <p class="text-sm font-semibold">Task System Home</p>
+          <span class="text-sm font-semibold">(Phoenix v{Application.spec(:phoenix, :vsn)})</span>
         </a>
       </div>
       <div class="flex-none">
@@ -86,7 +86,7 @@ defmodule VbvWeb.Layouts do
         hidden
       >
         {Gettext.gettext(VbvWeb.Gettext, "Attempting to reconnect")}
-        <.icon name="hero-arrow-path" class="ml-1 size-3 motion-safe:animate-spin" />
+        <!--.icon name="hero-arrow-path" class="ml-1 size-3 motion-safe:animate-spin" /-->
       </.flash>
 
       <.flash
@@ -98,7 +98,7 @@ defmodule VbvWeb.Layouts do
         hidden
       >
         {Gettext.gettext(VbvWeb.Gettext, "Attempting to reconnect")}
-        <.icon name="hero-arrow-path" class="ml-1 size-3 motion-safe:animate-spin" />
+        <!--.icon name="hero-arrow-path" class="ml-1 size-3 motion-safe:animate-spin" /-->
       </.flash>
     </div>
     """
@@ -119,7 +119,7 @@ defmodule VbvWeb.Layouts do
         phx-click={JS.dispatch("phx:set-theme")}
         data-phx-theme="system"
       >
-        <.icon name="hero-computer-desktop-micro" class="size-4 opacity-75 hover:opacity-100" />
+        <!--.icon name="hero-computer-desktop-micro" class="size-4 opacity-75 hover:opacity-100" /-->
       </button>
 
       <button
@@ -127,7 +127,7 @@ defmodule VbvWeb.Layouts do
         phx-click={JS.dispatch("phx:set-theme")}
         data-phx-theme="light"
       >
-        <.icon name="hero-sun-micro" class="size-4 opacity-75 hover:opacity-100" />
+        <!--.icon name="hero-sun-micro" class="size-4 opacity-75 hover:opacity-100" /-->
       </button>
 
       <button
@@ -135,7 +135,7 @@ defmodule VbvWeb.Layouts do
         phx-click={JS.dispatch("phx:set-theme")}
         data-phx-theme="dark"
       >
-        <.icon name="hero-moon-micro" class="size-4 opacity-75 hover:opacity-100" />
+        <!--.icon name="hero-moon-micro" class="size-4 opacity-75 hover:opacity-100" /-->
       </button>
     </div>
     """
