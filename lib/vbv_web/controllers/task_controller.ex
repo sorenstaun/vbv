@@ -32,8 +32,8 @@ defmodule VbvWeb.TaskController do
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, :new,
           changeset: changeset,
-          task_state_options: Tasks.task_state_options(conn),
-          category_options: [] # provide real category options here if available
+          states: Tasks.task_state_options(conn),
+          categories: Tasks.category_options(conn)
         )
     end
   end
@@ -46,7 +46,7 @@ defmodule VbvWeb.TaskController do
   def edit(conn, %{"id" => id}) do
     task = Tasks.get_task!(conn.assigns.current_scope, id)
     changeset = Tasks.change_task(conn.assigns.current_scope, task)
-    render(conn, :edit, task: task, changeset: changeset)
+    render(conn, :edit, changeset: changeset, task: task, states: Tasks.task_state_options(conn), categories: Tasks.category_options(conn))
   end
 
   def update(conn, %{"id" => id, "task" => task_params}) do
@@ -62,8 +62,8 @@ defmodule VbvWeb.TaskController do
         render(conn, :edit,
           task: task,
           changeset: changeset,
-          task_state_options: Tasks.task_state_options(conn),
-          category_options: [] # provide real category options here if available
+          states: Tasks.task_state_options(conn),
+          categories: Tasks.category_options(conn)
         )
     end
   end

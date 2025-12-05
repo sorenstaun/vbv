@@ -20,7 +20,7 @@ defmodule VbvWeb.Router do
   scope "/", VbvWeb do
     pipe_through :browser
 
-    get "/", TaskController, :index
+    get "/", PageController, :home
 
     resources "/tasks", TaskController
     resources "/task_categories", TaskCategoryController

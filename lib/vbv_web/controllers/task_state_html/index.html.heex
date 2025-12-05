@@ -20,7 +20,6 @@
           />
         </div>
     </:col>
-    <:col :let={task_state} label="Icon">{task_state.icon}</:col>
     <:action :let={task_state}>
       <div class="sr-only">
         <.link navigate={~p"/task_states/#{task_state}"}>Show</.link>

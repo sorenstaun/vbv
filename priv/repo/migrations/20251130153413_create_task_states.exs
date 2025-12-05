@@ -5,7 +5,6 @@ defmodule Vbv.Repo.Migrations.CreateTaskStates do
     create table(:task_states) do
       add :name, :string
       add :colour, :string
-      add :icon, :string
       add :user_id, references(:users, type: :id, on_delete: :delete_all)
 
       timestamps(type: :utc_datetime)

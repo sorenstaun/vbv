@@ -5,7 +5,6 @@ defmodule Vbv.TaskStates.TaskState do
   schema "task_states" do
     field :name, :string
     field :colour, :string
-    field :icon, :string
     field :user_id, :id
 
     timestamps(type: :utc_datetime)
@@ -14,8 +13,8 @@ defmodule Vbv.TaskStates.TaskState do
   @doc false
   def changeset(task_state, attrs, user_scope) do
     task_state
-    |> cast(attrs, [:name, :colour, :icon])
-    |> validate_required([:name, :colour, :icon])
+    |> cast(attrs, [:name, :colour])
+    |> validate_required([:name, :colour])
     |> put_change(:user_id, user_scope.user.id)
   end
 end

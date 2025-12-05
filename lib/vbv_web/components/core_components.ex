@@ -236,7 +236,7 @@ defmodule VbvWeb.CoreComponents do
               type="radio"
               name={@name}
               value={value}
-              checked={Phoenix.HTML.Form.normalize_value("radio", @value) == value}
+              checked={@value == value}
               class={@class || "radio"}
               {@rest}
             />

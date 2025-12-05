@@ -5,16 +5,18 @@
   <.input field={f[:deadline]} type="date" label="Deadline" />
   
   <.input 
-    field={f[:state_id]} 
+    field={f[:state]} 
     type="radio" 
     label="Task State" 
+    value={f[:state].value}
     options={@states} 
   />
   
   <.input 
-    field={f[:category_id]} 
+    field={f[:category]} 
     type="select" 
     label="Category" 
+    value={f[:category].value}
     options={@categories} 
   />
   
