@@ -1,25 +1,24 @@
-
 <.form :let={f} for={@changeset} action={@action}>
   <.input field={f[:name]} type="text" label="Name" />
   <.input field={f[:description]} type="textarea" label="Description" />
   <.input field={f[:deadline]} type="date" label="Deadline" />
-  
-  <.input 
-    field={f[:state]} 
+
+<.input 
+    field={f[:state_id]} 
     type="radio" 
     label="Task State" 
-    value={f[:state].value}
+    value={f[:state_id].value}
     options={@states} 
   />
   
   <.input 
-    field={f[:category]} 
+    field={f[:category_id]} 
     type="select" 
     label="Category" 
-    value={f[:category].value}
+    value={f[:category_id].value}
     options={@categories} 
   />
-  
+
   <footer>
     <.button variant="primary">Save Task</.button>
     <.button :if={@return_to} href={@return_to}>Cancel</.button>

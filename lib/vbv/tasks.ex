@@ -4,10 +4,19 @@ defmodule Vbv.Tasks do
   """
 
   import Ecto.Query, warn: false
+
+  require IEx
+
   alias Vbv.Repo
 
   alias Vbv.Tasks.Task
   alias Vbv.Users.Scope
+
+  def task_preload(tasks) do
+    tasks
+    |> Repo.preload(:state)
+    |> Repo.preload(:category)
+  end
 
   @doc """
   Subscribes to scoped notifications about any task changes.
@@ -59,7 +68,12 @@ defmodule Vbv.Tasks do
 
   """
   def get_task!(%Scope{} = scope, id) do
-    Repo.get_by!(Task, id: id, user_id: scope.user.id)
+    Repo.get_by!(
+      # Ensure you add :state to the preload list
+      from(t in Task, preload: [:category, :state]),
+      id: id,
+      user_id: scope.user.id
+    )
   end
 
   @doc """
@@ -83,7 +97,6 @@ defmodule Vbv.Tasks do
       {:ok, task}
     end
   end
-
 
   def task_state_options(conn) do
     conn.assigns.current_scope

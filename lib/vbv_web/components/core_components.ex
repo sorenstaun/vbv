@@ -29,6 +29,8 @@ defmodule VbvWeb.CoreComponents do
   use Phoenix.Component
   use Gettext, backend: VbvWeb.Gettext
 
+  require IEx
+
   alias Phoenix.LiveView.JS
 
   @doc """
@@ -235,6 +237,7 @@ defmodule VbvWeb.CoreComponents do
             <input
               type="radio"
               name={@name}
+              hans={value}
               value={value}
               checked={@value == value}
               class={@class || "radio"}

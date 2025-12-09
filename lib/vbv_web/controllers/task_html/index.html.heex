@@ -31,6 +31,8 @@
     <:col :let={task} label="Name">{task.name}</:col>
     <:col :let={task} label="Description">{task.description}</:col>
     <:col :let={task} label="Deadline">{task.deadline}</:col>
+    <:col :let={task} label="Category">{task.category.name}</:col>
+    <:col :let={task} label="State">{task.state.name}</:col>
     <:action :let={task}>
       <div class="sr-only">
         <.link navigate={~p"/tasks/#{task}"}>Show</.link>

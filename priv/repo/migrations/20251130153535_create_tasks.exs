@@ -6,8 +6,8 @@ defmodule Vbv.Repo.Migrations.CreateTasks do
       add :name, :string
       add :description, :text
       add :deadline, :date
-      add :category, references(:task_categories, on_delete: :nothing)
-      add :state, references(:task_states, on_delete: :nothing)
+      add :category_id, references(:task_categories, on_delete: :nothing)
+      add :state_id, references(:task_states, on_delete: :nothing)
       add :user_id, references(:users, type: :id, on_delete: :delete_all)
 
       timestamps(type: :utc_datetime)
@@ -15,7 +15,7 @@ defmodule Vbv.Repo.Migrations.CreateTasks do
 
     create index(:tasks, [:user_id])
 
-    create index(:tasks, [:category])
-    create index(:tasks, [:state])
+    create index(:tasks, [:category_id])
+    create index(:tasks, [:state_id])
   end
 end

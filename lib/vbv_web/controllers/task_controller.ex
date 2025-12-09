@@ -7,6 +7,7 @@ defmodule VbvWeb.TaskController do
 
   def index(conn, _params) do
     tasks = Tasks.list_tasks(conn.assigns.current_scope)
+      |> Tasks.task_preload()
     render(conn, :index, tasks: tasks, task_state_options: Tasks.task_state_options(conn))
   end
 
@@ -40,12 +41,18 @@ defmodule VbvWeb.TaskController do
 
   def show(conn, %{"id" => id}) do
     task = Tasks.get_task!(conn.assigns.current_scope, id)
+    task =
+      task
+      |> Tasks.task_preload()
+
     render(conn, :show, task: task)
   end
 
   def edit(conn, %{"id" => id}) do
     task = Tasks.get_task!(conn.assigns.current_scope, id)
+     |> Tasks.task_preload()
     changeset = Tasks.change_task(conn.assigns.current_scope, task)
+    # IEx.pry
     render(conn, :edit, changeset: changeset, task: task, states: Tasks.task_state_options(conn), categories: Tasks.category_options(conn))
   end
 
