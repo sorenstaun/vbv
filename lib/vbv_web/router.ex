@@ -21,10 +21,17 @@ defmodule VbvWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :home
+    get "/flowbite", PageController, :flowbite
 
     resources "/tasks", TaskController
     resources "/task_categories", TaskCategoryController
     resources "/task_states", TaskStateController
+  end
+
+  scope "/.well-known/appspecific", VbvWeb do
+    pipe_through :browser
+
+    get "/com.chrome.devtools.json", DevToolsController, :local
   end
 
   # Other scopes may use custom stacks.
