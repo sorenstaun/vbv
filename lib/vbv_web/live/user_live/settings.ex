@@ -18,6 +18,10 @@ defmodule VbvWeb.UserLive.Settings do
         </.header>
       </div>
 
+      <div class="flex justify-end mb-4">
+      <Layouts.theme_toggle />
+      </div>
+
       <.form for={@email_form} id="settings_form" phx-submit="save_settings">
         <.input
           field={@email_form[:first_name]}

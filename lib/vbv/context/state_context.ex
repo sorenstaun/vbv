@@ -1,23 +1,17 @@
-defmodule Vbv.TaskStates do
-  @moduledoc false
+defmodule Vbv.Context.StateContext do
+  @moduledoc """
+  The Tasks context.
+  """
 
-  alias Vbv.Context.StateContext
+  import Ecto.Query, warn: false
+
+  alias Vbv.Repo
   alias Vbv.TaskStates.TaskState
 
-  @doc """
-  Subscribes to scoped notifications about any task_state changes.
-
-  The broadcasted messages match the pattern:
-
-    * {:created, %TaskState{}}
-    * {:updated, %TaskState{}}
-    * {:deleted, %TaskState{}}
-
-  """
-  def subscribe_task_states(scope) do
+  defp broadcast_task_state(scope, message) do
     key = scope.user.id
 
-    Phoenix.PubSub.subscribe(Vbv.PubSub, "user:#{key}:task_states")
+    Phoenix.PubSub.broadcast(Vbv.PubSub, "user:#{key}:task_states", message)
   end
 
   @doc """
@@ -30,7 +24,7 @@ defmodule Vbv.TaskStates do
 
   """
   def list_task_states(scope) do
-    StateContext.list_task_states(scope)
+    Repo.all_by(TaskState, user_id: scope.user.id)
   end
 
   @doc """
@@ -48,7 +42,7 @@ defmodule Vbv.TaskStates do
 
   """
   def get_task_state!(scope, id) do
-    StateContext.get_task_state!(scope, id)
+    Repo.get_by!(TaskState, id: id, user_id: scope.user.id)
   end
 
   @doc """
@@ -64,7 +58,13 @@ defmodule Vbv.TaskStates do
 
   """
   def create_task_state(scope, attrs) do
-    StateContext.create_task_state(scope, attrs)
+    with {:ok, task_state = %TaskState{}} <-
+           %TaskState{}
+           |> TaskState.changeset(attrs, scope)
+           |> Repo.insert() do
+      broadcast_task_state(scope, {:created, task_state})
+      {:ok, task_state}
+    end
   end
 
   @doc """
@@ -80,7 +80,15 @@ defmodule Vbv.TaskStates do
 
   """
   def update_task_state(scope, %TaskState{} = task_state, attrs) do
-    StateContext.update_task_state(scope, task_state, attrs)
+    true = task_state.user_id == scope.user.id
+
+    with {:ok, task_state = %TaskState{}} <-
+           task_state
+           |> TaskState.changeset(attrs, scope)
+           |> Repo.update() do
+      broadcast_task_state(scope, {:updated, task_state})
+      {:ok, task_state}
+    end
   end
 
   @doc """
@@ -96,7 +104,13 @@ defmodule Vbv.TaskStates do
 
   """
   def delete_task_state(scope, %TaskState{} = task_state) do
-    StateContext.delete_task_state(scope, task_state)
+    true = task_state.user_id == scope.user.id
+
+    with {:ok, task_state = %TaskState{}} <-
+           Repo.delete(task_state) do
+      broadcast_task_state(scope, {:deleted, task_state})
+      {:ok, task_state}
+    end
   end
 
   @doc """
@@ -117,4 +131,5 @@ defmodule Vbv.TaskStates do
 
     TaskState.changeset(task_state, attrs, scope)
   end
+
 end

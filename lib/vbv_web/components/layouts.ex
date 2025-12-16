@@ -44,25 +44,25 @@ defmodule VbvWeb.Layouts do
               class="h-6 mr-3 sm:h-9"
               alt="Flowbite Logo"
             />
-            <span class="self-center text-xl font-semibold whitespace-nowrap dark:text-white">
+            <span class="self-center text-xl text-black font-semibold whitespace-nowrap dark:text-white">
               VBV Tasks
             </span>
           </a>
           <div class="flex items-center lg:order-2">
-            <a :if={!@current_scope.user}
+            <a :if={!@current_scope}
               href="/users/log-in"
               class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
             >
               Log in
               </a>
-            <a :if={@current_scope.user.id}
+            <a :if={@current_scope && @current_scope.user.id}
               href="/users/settings"
               class="text-gray-800 dark:text-white hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800"
             >
             Settings
             </a>
-            <a :if={@current_scope.user.id}
-              href="/users/settings"
+            <a :if={@current_scope && @current_scope.user.id}
+              href="/users/log-out"
               class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
             >
             Logout
@@ -166,7 +166,7 @@ defmodule VbvWeb.Layouts do
         hidden
       >
         {Gettext.gettext(VbvWeb.Gettext, "Attempting to reconnect")}
-        <!--.icon name="hero-arrow-path" class="ml-1 size-3 motion-safe:animate-spin" /-->
+        <.icon name="hero-arrow-path" class="ml-1 size-3 motion-safe:animate-spin" />
       </.flash>
 
       <.flash
@@ -178,7 +178,7 @@ defmodule VbvWeb.Layouts do
         hidden
       >
         {Gettext.gettext(VbvWeb.Gettext, "Attempting to reconnect")}
-        <!--.icon name="hero-arrow-path" class="ml-1 size-3 motion-safe:animate-spin" /-->
+        <.icon name="hero-arrow-path" class="ml-1 size-3 motion-safe:animate-spin" />
       </.flash>
     </div>
     """
@@ -199,7 +199,7 @@ defmodule VbvWeb.Layouts do
         phx-click={JS.dispatch("phx:set-theme")}
         data-phx-theme="system"
       >
-        <!--.icon name="hero-computer-desktop-micro" class="size-4 opacity-75 hover:opacity-100" /-->
+        <.icon name="hero-computer-desktop-micro" class="size-4 opacity-75 hover:opacity-100" />
       </button>
 
       <button
@@ -207,7 +207,7 @@ defmodule VbvWeb.Layouts do
         phx-click={JS.dispatch("phx:set-theme")}
         data-phx-theme="light"
       >
-        <!--.icon name="hero-sun-micro" class="size-4 opacity-75 hover:opacity-100" /-->
+        <.icon name="hero-sun-micro" class="size-4 opacity-75 hover:opacity-100" />
       </button>
 
       <button
@@ -215,7 +215,7 @@ defmodule VbvWeb.Layouts do
         phx-click={JS.dispatch("phx:set-theme")}
         data-phx-theme="dark"
       >
-        <!--.icon name="hero-moon-micro" class="size-4 opacity-75 hover:opacity-100" /-->
+        <.icon name="hero-moon-micro" class="size-4 opacity-75 hover:opacity-100" />
       </button>
     </div>
     """

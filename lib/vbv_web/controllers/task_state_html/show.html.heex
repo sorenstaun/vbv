@@ -4,7 +4,7 @@
     <:subtitle>This is a task_state record from your database.</:subtitle>
     <:actions>
       <.button navigate={~p"/task_states"}>
-        Back
+        <.icon name="hero-arrow-left" />
       </.button>
       <.button variant="primary" navigate={~p"/task_states/#{@task_state}/edit?return_to=show"}>
         Edit task_state
