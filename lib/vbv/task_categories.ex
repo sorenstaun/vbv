@@ -6,142 +6,142 @@ defmodule Vbv.TaskCategories do
   import Ecto.Query, warn: false
   alias Vbv.Repo
 
-  alias Vbv.TaskCategories.TaskCategory
+  alias Vbv.TaskCategories.Category
   alias Vbv.Users.Scope
 
   @doc """
-  Subscribes to scoped notifications about any task_category changes.
+  Subscribes to scoped notifications about any category changes.
 
   The broadcasted messages match the pattern:
 
-    * {:created, %TaskCategory{}}
-    * {:updated, %TaskCategory{}}
-    * {:deleted, %TaskCategory{}}
+    * {:created, %Category{}}
+    * {:updated, %Category{}}
+    * {:deleted, %Category{}}
 
   """
-  def subscribe_task_categories(%Scope{} = scope) do
+  def subscribe_categories(%Scope{} = scope) do
     key = scope.user.id
 
-    Phoenix.PubSub.subscribe(Vbv.PubSub, "user:#{key}:task_categories")
+    Phoenix.PubSub.subscribe(Vbv.PubSub, "user:#{key}:categories")
   end
 
-  defp broadcast_task_category(%Scope{} = scope, message) do
+  defp broadcast_category(%Scope{} = scope, message) do
     key = scope.user.id
 
-    Phoenix.PubSub.broadcast(Vbv.PubSub, "user:#{key}:task_categories", message)
+    Phoenix.PubSub.broadcast(Vbv.PubSub, "user:#{key}:categories", message)
   end
 
   @doc """
-  Returns the list of task_categories.
+  Returns the list of categories.
 
   ## Examples
 
-      iex> list_task_categories(scope)
-      [%TaskCategory{}, ...]
+      iex> list_categories(scope)
+      [%Category{}, ...]
 
   """
-  def list_task_categories(%Scope{} = scope) do
-    Repo.all_by(TaskCategory, user_id: scope.user.id)
+  def list_categories(%Scope{} = scope) do
+    Repo.all_by(Category, user_id: scope.user.id)
   end
 
   @doc """
-  Gets a single task_category.
+  Gets a single category.
 
   Raises `Ecto.NoResultsError` if the Task category does not exist.
 
   ## Examples
 
-      iex> get_task_category!(scope, 123)
-      %TaskCategory{}
+      iex> get_category!(scope, 123)
+      %Category{}
 
-      iex> get_task_category!(scope, 456)
+      iex> get_category!(scope, 456)
       ** (Ecto.NoResultsError)
 
   """
-  def get_task_category!(%Scope{} = scope, id) do
-    Repo.get_by!(TaskCategory, id: id, user_id: scope.user.id)
+  def get_category!(%Scope{} = scope, id) do
+    Repo.get_by!(Category, id: id, user_id: scope.user.id)
   end
 
   @doc """
-  Creates a task_category.
+  Creates a category.
 
   ## Examples
 
-      iex> create_task_category(scope, %{field: value})
-      {:ok, %TaskCategory{}}
+      iex> create_category(scope, %{field: value})
+      {:ok, %Category{}}
 
-      iex> create_task_category(scope, %{field: bad_value})
+      iex> create_category(scope, %{field: bad_value})
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_task_category(%Scope{} = scope, attrs) do
-    with {:ok, task_category = %TaskCategory{}} <-
-           %TaskCategory{}
-           |> TaskCategory.changeset(attrs, scope)
+  def create_category(%Scope{} = scope, attrs) do
+    with {:ok, category = %Category{}} <-
+           %Category{}
+           |> Category.changeset(attrs, scope)
            |> Repo.insert() do
-      broadcast_task_category(scope, {:created, task_category})
-      {:ok, task_category}
+      broadcast_category(scope, {:created, category})
+      {:ok, category}
     end
   end
 
   @doc """
-  Updates a task_category.
+  Updates a category.
 
   ## Examples
 
-      iex> update_task_category(scope, task_category, %{field: new_value})
-      {:ok, %TaskCategory{}}
+      iex> update_category(scope, category, %{field: new_value})
+      {:ok, %Category{}}
 
-      iex> update_task_category(scope, task_category, %{field: bad_value})
+      iex> update_category(scope, category, %{field: bad_value})
       {:error, %Ecto.Changeset{}}
 
   """
-  def update_task_category(%Scope{} = scope, %TaskCategory{} = task_category, attrs) do
-    true = task_category.user_id == scope.user.id
+  def update_category(%Scope{} = scope, %Category{} = category, attrs) do
+    true = category.user_id == scope.user.id
 
-    with {:ok, task_category = %TaskCategory{}} <-
-           task_category
-           |> TaskCategory.changeset(attrs, scope)
+    with {:ok, category = %Category{}} <-
+           category
+           |> Category.changeset(attrs, scope)
            |> Repo.update() do
-      broadcast_task_category(scope, {:updated, task_category})
-      {:ok, task_category}
+      broadcast_category(scope, {:updated, category})
+      {:ok, category}
     end
   end
 
   @doc """
-  Deletes a task_category.
+  Deletes a category.
 
   ## Examples
 
-      iex> delete_task_category(scope, task_category)
-      {:ok, %TaskCategory{}}
+      iex> delete_category(scope, category)
+      {:ok, %Category{}}
 
-      iex> delete_task_category(scope, task_category)
+      iex> delete_category(scope, category)
       {:error, %Ecto.Changeset{}}
 
   """
-  def delete_task_category(%Scope{} = scope, %TaskCategory{} = task_category) do
-    true = task_category.user_id == scope.user.id
+  def delete_category(%Scope{} = scope, %Category{} = category) do
+    true = category.user_id == scope.user.id
 
-    with {:ok, task_category = %TaskCategory{}} <-
-           Repo.delete(task_category) do
-      broadcast_task_category(scope, {:deleted, task_category})
-      {:ok, task_category}
+    with {:ok, category = %Category{}} <-
+           Repo.delete(category) do
+      broadcast_category(scope, {:deleted, category})
+      {:ok, category}
     end
   end
 
   @doc """
-  Returns an `%Ecto.Changeset{}` for tracking task_category changes.
+  Returns an `%Ecto.Changeset{}` for tracking category changes.
 
   ## Examples
 
-      iex> change_task_category(scope, task_category)
-      %Ecto.Changeset{data: %TaskCategory{}}
+      iex> change_category(scope, category)
+      %Ecto.Changeset{data: %Category{}}
 
   """
-  def change_task_category(%Scope{} = scope, %TaskCategory{} = task_category, attrs \\ %{}) do
-    true = task_category.user_id == scope.user.id
+  def change_category(%Scope{} = scope, %Category{} = category, attrs \\ %{}) do
+    true = category.user_id == scope.user.id
 
-    TaskCategory.changeset(task_category, attrs, scope)
+    Category.changeset(category, attrs, scope)
   end
 end

@@ -24,8 +24,8 @@ defmodule VbvWeb.Router do
     get "/flowbite", PageController, :flowbite
 
     resources "/tasks", TaskController
-    resources "/task_categories", TaskCategoryController
-    resources "/task_states", TaskStateController
+    resources "/categories", CategoryController
+    resources "/states", StateController
   end
 
   scope "/.well-known/appspecific", VbvWeb do

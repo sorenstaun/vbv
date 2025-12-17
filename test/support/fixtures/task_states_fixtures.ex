@@ -1,13 +1,13 @@
-defmodule Vbv.TaskStatesFixtures do
+defmodule Vbv.StatesFixtures do
   @moduledoc """
   This module defines test helpers for creating
-  entities via the `Vbv.TaskStates` context.
+  entities via the `Vbv.States` context.
   """
 
   @doc """
-  Generate a task_state.
+  Generate a state.
   """
-  def task_state_fixture(scope, attrs \\ %{}) do
+  def state_fixture(scope, attrs \\ %{}) do
     attrs =
       Enum.into(attrs, %{
         colour: "some colour",
@@ -15,7 +15,7 @@ defmodule Vbv.TaskStatesFixtures do
         name: "some name"
       })
 
-    {:ok, task_state} = Vbv.TaskStates.create_task_state(scope, attrs)
-    task_state
+    {:ok, state} = Vbv.States.create_state(scope, attrs)
+    state
   end
 end

@@ -6,130 +6,130 @@ defmodule Vbv.Context.StateContext do
   import Ecto.Query, warn: false
 
   alias Vbv.Repo
-  alias Vbv.TaskStates.TaskState
+  alias Vbv.States.State
 
-  defp broadcast_task_state(scope, message) do
+  defp broadcast_state(scope, message) do
     key = scope.user.id
 
-    Phoenix.PubSub.broadcast(Vbv.PubSub, "user:#{key}:task_states", message)
+    Phoenix.PubSub.broadcast(Vbv.PubSub, "user:#{key}:states", message)
   end
 
   @doc """
-  Returns the list of task_states.
+  Returns the list of states.
 
   ## Examples
 
-      iex> list_task_states(scope)
-      [%TaskState{}, ...]
+      iex> list_states(scope)
+      [%State{}, ...]
 
   """
-  def list_task_states(scope) do
-    Repo.all_by(TaskState, user_id: scope.user.id)
+  def list_states(scope) do
+    Repo.all_by(State, user_id: scope.user.id)
   end
 
   @doc """
-  Gets a single task_state.
+  Gets a single state.
 
   Raises `Ecto.NoResultsError` if the Task state does not exist.
 
   ## Examples
 
-      iex> get_task_state!(scope, 123)
-      %TaskState{}
+      iex> get_state!(scope, 123)
+      %State{}
 
-      iex> get_task_state!(scope, 456)
+      iex> get_state!(scope, 456)
       ** (Ecto.NoResultsError)
 
   """
-  def get_task_state!(scope, id) do
-    Repo.get_by!(TaskState, id: id, user_id: scope.user.id)
+  def get_state!(scope, id) do
+    Repo.get_by!(State, id: id, user_id: scope.user.id)
   end
 
   @doc """
-  Creates a task_state.
+  Creates a state.
 
   ## Examples
 
-      iex> create_task_state(scope, %{field: value})
-      {:ok, %TaskState{}}
+      iex> create_state(scope, %{field: value})
+      {:ok, %State{}}
 
-      iex> create_task_state(scope, %{field: bad_value})
+      iex> create_state(scope, %{field: bad_value})
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_task_state(scope, attrs) do
-    with {:ok, task_state = %TaskState{}} <-
-           %TaskState{}
-           |> TaskState.changeset(attrs, scope)
+  def create_state(scope, attrs) do
+    with {:ok, state = %State{}} <-
+           %State{}
+           |> State.changeset(attrs, scope)
            |> Repo.insert() do
-      broadcast_task_state(scope, {:created, task_state})
-      {:ok, task_state}
+      broadcast_state(scope, {:created, state})
+      {:ok, state}
     end
   end
 
   @doc """
-  Updates a task_state.
+  Updates a state.
 
   ## Examples
 
-      iex> update_task_state(scope, task_state, %{field: new_value})
-      {:ok, %TaskState{}}
+      iex> update_state(scope, state, %{field: new_value})
+      {:ok, %State{}}
 
-      iex> update_task_state(scope, task_state, %{field: bad_value})
+      iex> update_state(scope, state, %{field: bad_value})
       {:error, %Ecto.Changeset{}}
 
   """
-  def update_task_state(scope, %TaskState{} = task_state, attrs) do
-    true = task_state.user_id == scope.user.id
+  def update_state(scope, %State{} = state, attrs) do
+    true = state.user_id == scope.user.id
 
-    with {:ok, task_state = %TaskState{}} <-
-           task_state
-           |> TaskState.changeset(attrs, scope)
+    with {:ok, state = %State{}} <-
+           state
+           |> State.changeset(attrs, scope)
            |> Repo.update() do
-      broadcast_task_state(scope, {:updated, task_state})
-      {:ok, task_state}
+      broadcast_state(scope, {:updated, state})
+      {:ok, state}
     end
   end
 
   @doc """
-  Deletes a task_state.
+  Deletes a state.
 
   ## Examples
 
-      iex> delete_task_state(scope, task_state)
-      {:ok, %TaskState{}}
+      iex> delete_state(scope, state)
+      {:ok, %State{}}
 
-      iex> delete_task_state(scope, task_state)
+      iex> delete_state(scope, state)
       {:error, %Ecto.Changeset{}}
 
   """
-  def delete_task_state(scope, %TaskState{} = task_state) do
-    true = task_state.user_id == scope.user.id
+  def delete_state(scope, %State{} = state) do
+    true = state.user_id == scope.user.id
 
-    with {:ok, task_state = %TaskState{}} <-
-           Repo.delete(task_state) do
-      broadcast_task_state(scope, {:deleted, task_state})
-      {:ok, task_state}
+    with {:ok, state = %State{}} <-
+           Repo.delete(state) do
+      broadcast_state(scope, {:deleted, state})
+      {:ok, state}
     end
   end
 
   @doc """
-  Returns an `%Ecto.Changeset{}` for tracking task_state changes.
+  Returns an `%Ecto.Changeset{}` for tracking state changes.
 
   ## Examples
 
-      iex> change_task_state(scope, task_state)
-      %Ecto.Changeset{data: %TaskState{}}
+      iex> change_state(scope, state)
+      %Ecto.Changeset{data: %State{}}
 
   """
-  def change_task_state(scope, %TaskState{} = task_state, attrs \\ %{}) do
-    # For new task_states the user_id is nil — only enforce ownership check
-    # when the task_state already has a user_id.
-    if task_state.user_id != nil do
-      true = task_state.user_id == scope.user.id
+  def change_state(scope, %State{} = state, attrs \\ %{}) do
+    # For new states the user_id is nil — only enforce ownership check
+    # when the state already has a user_id.
+    if state.user_id != nil do
+      true = state.user_id == scope.user.id
     end
 
-    TaskState.changeset(task_state, attrs, scope)
+    State.changeset(state, attrs, scope)
   end
 
 end

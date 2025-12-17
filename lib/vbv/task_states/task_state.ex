@@ -1,8 +1,8 @@
-defmodule Vbv.TaskStates.TaskState do
+defmodule Vbv.States.State do
   use Ecto.Schema
   import Ecto.Changeset
 
-  schema "task_states" do
+  schema "states" do
     field :name, :string
     field :colour, :string
     field :user_id, :id
@@ -11,8 +11,8 @@ defmodule Vbv.TaskStates.TaskState do
   end
 
   @doc false
-  def changeset(task_state, attrs, user_scope) do
-    task_state
+  def changeset(state, attrs, user_scope) do
+    state
     |> cast(attrs, [:name, :colour])
     |> validate_required([:name, :colour])
     |> put_change(:user_id, user_scope.user.id)

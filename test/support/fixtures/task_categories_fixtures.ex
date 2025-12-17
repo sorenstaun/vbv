@@ -5,9 +5,9 @@ defmodule Vbv.TaskCategoriesFixtures do
   """
 
   @doc """
-  Generate a task_category.
+  Generate a category.
   """
-  def task_category_fixture(scope, attrs \\ %{}) do
+  def category_fixture(scope, attrs \\ %{}) do
     attrs =
       Enum.into(attrs, %{
         colour: "some colour",
@@ -15,7 +15,7 @@ defmodule Vbv.TaskCategoriesFixtures do
         name: "some name"
       })
 
-    {:ok, task_category} = Vbv.TaskCategories.create_task_category(scope, attrs)
-    task_category
+    {:ok, category} = Vbv.TaskCategories.create_category(scope, attrs)
+    category
   end
 end

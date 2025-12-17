@@ -1,4 +1,4 @@
-defmodule VbvWeb.TaskCategoryControllerTest do
+defmodule VbvWeb.CategoryControllerTest do
   use VbvWeb.ConnCase
 
   import Vbv.TaskCategoriesFixtures
@@ -14,81 +14,81 @@ defmodule VbvWeb.TaskCategoryControllerTest do
   setup :register_and_log_in_user
 
   describe "index" do
-    test "lists all task_categories", %{conn: conn} do
-      conn = get(conn, ~p"/task_categories")
-      assert html_response(conn, 200) =~ "Listing Task categories"
+    test "lists all categories", %{conn: conn} do
+      conn = get(conn, ~p"/categories")
+      assert html_response(conn, 200) =~ "Listing Categories"
     end
   end
 
-  describe "new task_category" do
+  describe "new category" do
     test "renders form", %{conn: conn} do
-      conn = get(conn, ~p"/task_categories/new")
+      conn = get(conn, ~p"/categories/new")
       assert html_response(conn, 200) =~ "New Task category"
     end
   end
 
-  describe "create task_category" do
+  describe "create category" do
     test "redirects to show when data is valid", %{conn: conn} do
-      conn = post(conn, ~p"/task_categories", task_category: @create_attrs)
+      conn = post(conn, ~p"/categories", category: @create_attrs)
 
       assert %{id: id} = redirected_params(conn)
-      assert redirected_to(conn) == ~p"/task_categories/#{id}"
+      assert redirected_to(conn) == ~p"/categories/#{id}"
 
-      conn = get(conn, ~p"/task_categories/#{id}")
+      conn = get(conn, ~p"/categories/#{id}")
       assert html_response(conn, 200) =~ "Task category #{id}"
     end
 
     test "renders errors when data is invalid", %{conn: conn} do
-      conn = post(conn, ~p"/task_categories", task_category: @invalid_attrs)
+      conn = post(conn, ~p"/categories", category: @invalid_attrs)
       assert html_response(conn, 200) =~ "New Task category"
     end
   end
 
-  describe "edit task_category" do
-    setup [:create_task_category]
+  describe "edit category" do
+    setup [:create_category]
 
-    test "renders form for editing chosen task_category", %{
+    test "renders form for editing chosen category", %{
       conn: conn,
-      task_category: task_category
+      category: category
     } do
-      conn = get(conn, ~p"/task_categories/#{task_category}/edit")
+      conn = get(conn, ~p"/categories/#{category}/edit")
       assert html_response(conn, 200) =~ "Edit Task category"
     end
   end
 
-  describe "update task_category" do
-    setup [:create_task_category]
+  describe "update category" do
+    setup [:create_category]
 
-    test "redirects when data is valid", %{conn: conn, task_category: task_category} do
-      conn = put(conn, ~p"/task_categories/#{task_category}", task_category: @update_attrs)
-      assert redirected_to(conn) == ~p"/task_categories/#{task_category}"
+    test "redirects when data is valid", %{conn: conn, category: category} do
+      conn = put(conn, ~p"/categories/#{category}", category: @update_attrs)
+      assert redirected_to(conn) == ~p"/categories/#{category}"
 
-      conn = get(conn, ~p"/task_categories/#{task_category}")
+      conn = get(conn, ~p"/categories/#{category}")
       assert html_response(conn, 200) =~ "some updated name"
     end
 
-    test "renders errors when data is invalid", %{conn: conn, task_category: task_category} do
-      conn = put(conn, ~p"/task_categories/#{task_category}", task_category: @invalid_attrs)
+    test "renders errors when data is invalid", %{conn: conn, category: category} do
+      conn = put(conn, ~p"/categories/#{category}", category: @invalid_attrs)
       assert html_response(conn, 200) =~ "Edit Task category"
     end
   end
 
-  describe "delete task_category" do
-    setup [:create_task_category]
+  describe "delete category" do
+    setup [:create_category]
 
-    test "deletes chosen task_category", %{conn: conn, task_category: task_category} do
-      conn = delete(conn, ~p"/task_categories/#{task_category}")
-      assert redirected_to(conn) == ~p"/task_categories"
+    test "deletes chosen category", %{conn: conn, category: category} do
+      conn = delete(conn, ~p"/categories/#{category}")
+      assert redirected_to(conn) == ~p"/categories"
 
       assert_error_sent 404, fn ->
-        get(conn, ~p"/task_categories/#{task_category}")
+        get(conn, ~p"/categories/#{category}")
       end
     end
   end
 
-  defp create_task_category(%{scope: scope}) do
-    task_category = task_category_fixture(scope)
+  defp create_category(%{scope: scope}) do
+    category = category_fixture(scope)
 
-    %{task_category: task_category}
+    %{category: category}
   end
 end

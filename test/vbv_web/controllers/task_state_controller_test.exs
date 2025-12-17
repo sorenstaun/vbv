@@ -1,7 +1,7 @@
-defmodule VbvWeb.TaskStateControllerTest do
+defmodule VbvWeb.StateControllerTest do
   use VbvWeb.ConnCase
 
-  import Vbv.TaskStatesFixtures
+  import Vbv.StatesFixtures
 
   @create_attrs %{name: "some name", colour: "some colour", icon: "some icon"}
   @update_attrs %{
@@ -14,78 +14,78 @@ defmodule VbvWeb.TaskStateControllerTest do
   setup :register_and_log_in_user
 
   describe "index" do
-    test "lists all task_states", %{conn: conn} do
-      conn = get(conn, ~p"/task_states")
-      assert html_response(conn, 200) =~ "Listing Task states"
+    test "lists all states", %{conn: conn} do
+      conn = get(conn, ~p"/states")
+      assert html_response(conn, 200) =~ "Listing States"
     end
   end
 
-  describe "new task_state" do
+  describe "new state" do
     test "renders form", %{conn: conn} do
-      conn = get(conn, ~p"/task_states/new")
+      conn = get(conn, ~p"/states/new")
       assert html_response(conn, 200) =~ "New Task state"
     end
   end
 
-  describe "create task_state" do
+  describe "create state" do
     test "redirects to show when data is valid", %{conn: conn} do
-      conn = post(conn, ~p"/task_states", task_state: @create_attrs)
+      conn = post(conn, ~p"/states", state: @create_attrs)
 
       assert %{id: id} = redirected_params(conn)
-      assert redirected_to(conn) == ~p"/task_states/#{id}"
+      assert redirected_to(conn) == ~p"/states/#{id}"
 
-      conn = get(conn, ~p"/task_states/#{id}")
+      conn = get(conn, ~p"/states/#{id}")
       assert html_response(conn, 200) =~ "Task state #{id}"
     end
 
     test "renders errors when data is invalid", %{conn: conn} do
-      conn = post(conn, ~p"/task_states", task_state: @invalid_attrs)
+      conn = post(conn, ~p"/states", state: @invalid_attrs)
       assert html_response(conn, 200) =~ "New Task state"
     end
   end
 
-  describe "edit task_state" do
-    setup [:create_task_state]
+  describe "edit state" do
+    setup [:create_state]
 
-    test "renders form for editing chosen task_state", %{conn: conn, task_state: task_state} do
-      conn = get(conn, ~p"/task_states/#{task_state}/edit")
+    test "renders form for editing chosen state", %{conn: conn, state: state} do
+      conn = get(conn, ~p"/states/#{state}/edit")
       assert html_response(conn, 200) =~ "Edit Task state"
     end
   end
 
-  describe "update task_state" do
-    setup [:create_task_state]
+  describe "update state" do
+    setup [:create_state]
 
-    test "redirects when data is valid", %{conn: conn, task_state: task_state} do
-      conn = put(conn, ~p"/task_states/#{task_state}", task_state: @update_attrs)
-      assert redirected_to(conn) == ~p"/task_states/#{task_state}"
+    test "redirects when data is valid", %{conn: conn, state: state} do
+      conn = put(conn, ~p"/states/#{state}", state: @update_attrs)
+      assert redirected_to(conn) == ~p"/states/#{state}"
 
-      conn = get(conn, ~p"/task_states/#{task_state}")
+      conn = get(conn, ~p"/states/#{state}")
       assert html_response(conn, 200) =~ "some updated name"
     end
 
-    test "renders errors when data is invalid", %{conn: conn, task_state: task_state} do
-      conn = put(conn, ~p"/task_states/#{task_state}", task_state: @invalid_attrs)
+    test "renders errors when data is invalid", %{conn: conn, state: state} do
+      conn = put(conn, ~p"/states/#{state}", state: @invalid_attrs)
       assert html_response(conn, 200) =~ "Edit Task state"
     end
   end
 
-  describe "delete task_state" do
-    setup [:create_task_state]
+  describe "delete state" do
+    setup [:create_state]
 
-    test "deletes chosen task_state", %{conn: conn, task_state: task_state} do
-      conn = delete(conn, ~p"/task_states/#{task_state}")
-      assert redirected_to(conn) == ~p"/task_states"
+    test "deletes chosen state", %{conn: conn, state: state} do
+      conn = delete(conn, ~p"/states/#{state}")
+      assert redirected_to(conn) == ~p"/states"
 
       assert_error_sent 404, fn ->
-        get(conn, ~p"/task_states/#{task_state}")
+        get(conn, ~p"/states/#{state}")
       end
     end
   end
 
-  defp create_task_state(%{scope: scope}) do
-    task_state = task_state_fixture(scope)
+  defp create_state(%{scope: scope}) do
+    state = state_fixture(scope)
 
-    %{task_state: task_state}
+    %{state: state}
   end
 end

@@ -1,0 +1,12 @@
+<Layouts.app flash={@flash} current_scope={@current_scope}>
+  <.header>
+    Edit Task state {@state.id}
+    <:subtitle>Use this form to manage state records in your database.</:subtitle>
+  </.header>
+
+  <.state_form
+    changeset={@changeset}
+    action={~p"/states/#{@state}"}
+    return_to={~p"/states"}
+  />
+</Layouts.app>

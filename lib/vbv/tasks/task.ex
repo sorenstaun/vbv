@@ -8,8 +8,8 @@ defmodule Vbv.Tasks.Task do
     field :deadline, :date
     field :user_id, :id
 
-    belongs_to :category, Vbv.TaskCategories.TaskCategory
-    belongs_to :state, Vbv.TaskStates.TaskState
+    belongs_to :category, Vbv.TaskCategories.Category
+    belongs_to :state, Vbv.States.State
 
     timestamps(type: :utc_datetime)
   end

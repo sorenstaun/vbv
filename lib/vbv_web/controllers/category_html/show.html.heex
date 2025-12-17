@@ -1,29 +1,29 @@
 <Layouts.app flash={@flash} current_scope={@current_scope}>
   <.header>
-    Task category {@task_category.id}
-    <:subtitle>This is a task_category record from your database.</:subtitle>
+    Task category {@category.id}
+    <:subtitle>This is a category record from your database.</:subtitle>
     <:actions>
-      <.button navigate={~p"/task_categories"}>
+      <.button navigate={~p"/categories"}>
         <.icon name="hero-arrow-left" />
       </.button>
       <.button
         variant="primary"
-        navigate={~p"/task_categories/#{@task_category}/edit?return_to=show"}
+        navigate={~p"/categories/#{@category}/edit?return_to=show"}
       >
-        Edit task_category
+        Edit category
       </.button>
     </:actions>
   </.header>
 
   <.list>
-    <:item title="Name">{@task_category.name}</:item>
+    <:item title="Name">{@category.name}</:item>
     <:item title="Colour">
       <div class="flex items-center">
         <span
           role="img"
-          aria-label={"Colour: #{@task_category.colour}"}
+          aria-label={"Colour: #{@category.colour}"}
           class="w-6 h-6 rounded-full border"
-          style={"background-color: #{@task_category.colour}"}
+          style={"background-color: #{@category.colour}"}
         />
       </div>
     </:item>

@@ -1,8 +1,8 @@
-defmodule Vbv.Repo.Migrations.CreateTaskStates do
+defmodule Vbv.Repo.Migrations.CreateStates do
   use Ecto.Migration
 
   def change do
-    create table(:task_states) do
+    create table(:states) do
       add :name, :string
       add :colour, :string
       add :user_id, references(:users, type: :id, on_delete: :delete_all)
@@ -10,6 +10,6 @@ defmodule Vbv.Repo.Migrations.CreateTaskStates do
       timestamps(type: :utc_datetime)
     end
 
-    create index(:task_states, [:user_id])
+    create index(:states, [:user_id])
   end
 end

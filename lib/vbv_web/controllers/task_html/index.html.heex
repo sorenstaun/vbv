@@ -2,18 +2,18 @@
   <div>
     <span class="mr-2">
       <a
-        href="/task_states"
+        href="/states"
         class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg shadow-md transition duration-300 ease-in-out"
       >
-        Task States
+        States
       </a>
     </span>
     <span class="mr-2">
       <a
-        href="/task_categories"
+        href="/categories"
         class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg shadow-md transition duration-300 ease-in-out"
       >
-        Task Categories
+        Categories
       </a>
     </span>
   </div>
@@ -29,9 +29,20 @@
 
   <.table id="tasks" rows={@tasks} row_click={&JS.navigate(~p"/tasks/#{&1}")}>
     <:col :let={task} label="Name">{task.name}</:col>
-    <:col :let={task} label="Description">{task.description}</:col>
     <:col :let={task} label="Deadline">{task.deadline}</:col>
-    <:col :let={task} label="Category">{task.category.name}</:col>
+    <:col :let={task} label="">
+    </:col>
+    <:col :let={task} label="Category">
+      <div class="flex items-center">
+        <span
+          role="img"
+          aria-label={"Colour: #{task.category.colour}"}
+          class="w-6 h-6 rounded-full border"
+          style={"background-color: #{task.category.colour}"}
+        />&nbsp;
+      {task.category.name}
+      </div>
+    </:col>
     <:col :let={task} label="State">{task.state.name}</:col>
     <:action :let={task}>
       <div class="sr-only">
