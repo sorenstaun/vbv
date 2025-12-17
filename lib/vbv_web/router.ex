@@ -81,6 +81,7 @@ defmodule VbvWeb.Router do
     end
 
     post "/users/log-in", UserSessionController, :create
+    get "/users/log-out", UserSessionController, :delete
     delete "/users/log-out", UserSessionController, :delete
   end
 end

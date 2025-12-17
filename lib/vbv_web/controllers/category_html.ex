@@ -14,4 +14,19 @@ defmodule VbvWeb.CategoryHTML do
   attr :return_to, :string, default: nil
 
   def category_form(assigns)
+
+  def category(assigns) do
+    ~H"""
+    <.link href={~p"/categories/#{@category.id}"}>
+      <div class="flex items-center">
+        <span
+          role="img"
+          aria-label={"Colour: #{@category.colour}"}
+          class="w-6 h-6 rounded-full border"
+          style={"background-color: #{@category.colour}"}
+        />&nbsp; {@category.name}
+      </div>
+    </.link>
+    """
+  end
 end
