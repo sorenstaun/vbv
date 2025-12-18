@@ -4,6 +4,7 @@ defmodule VbvWeb.Layouts do
   used by your application.
   """
   use VbvWeb, :html
+  require IEx
 
   # Embed all files in layouts/* within this module.
   # The default root.html.heex file contains the HTML
@@ -49,23 +50,26 @@ defmodule VbvWeb.Layouts do
             </span>
           </a>
           <div class="flex items-center lg:order-2">
-            <a :if={!@current_scope}
+            <a
+              :if={!@current_scope}
               href="/users/log-in"
               class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
             >
               Log in
-              </a>
-            <a :if={@current_scope && @current_scope.user.id}
+            </a>
+            <a
+              :if={@current_scope && @current_scope.user.id}
               href="/users/settings"
               class="text-gray-800 dark:text-white hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800"
             >
-            Settings
+              Settings
             </a>
-            <a :if={@current_scope && @current_scope.user.id}
+            <a
+              :if={@current_scope && @current_scope.user.id}
               href="/users/log-out"
               class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
             >
-            Logout
+              Logout
             </a>
             <button
               data-collapse-toggle="mobile-menu-2"
@@ -108,32 +112,10 @@ defmodule VbvWeb.Layouts do
             id="mobile-menu-2"
           >
             <ul class="flex flex-col mt-4 font-medium lg:flex-row lg:space-x-8 lg:mt-0">
-              <li>
-                <a
-                  href="/"
-                  class="block py-2 pl-3 pr-4 text-white bg-blue-700 rounded-sm lg:bg-transparent lg:text-blue-700 lg:p-0 dark:text-white"
-                  aria-current="page"
-                >
-                  Home
-                </a>
-              </li>
-              <li>
-                <a
-                  href="/categories"
-                  class="block py-2 pl-3 pr-4 text-white bg-blue-700 rounded-sm lg:bg-transparent lg:text-blue-700 lg:p-0 dark:text-white"
-                  aria-current="page"
-                >
-                  Categories
-                </a>
-              </li>
-              <li>
-                <a
-                  href="/states"
-                  class="block py-2 pl-3 pr-4 text-gray-600 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-blue-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700"
-                >
-                  States
-                </a>
-              </li>
+              <.topmenu href="/" label="Home" current_scope={assigns} restricted={true} conn={@conn}/>
+              <.topmenu href="/tasks" label="Tasks" current_scope={assigns} restricted={true} conn={@conn}/>
+              <.topmenu href="/categories" label="Categories" current_scope={assigns} restricted={true} conn={@conn}/>
+              <.topmenu href="/states" label="States" current_scope={assigns} restricted={true} conn={@conn}/>
             </ul>
           </div>
         </div>
@@ -147,6 +129,22 @@ defmodule VbvWeb.Layouts do
     </main>
 
     <.flash_group flash={@flash} />
+    """
+  end
+
+  def topmenu(assigns) do
+    passive_link="block py-2 pl-3 pr-4 text-gray-600 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-blue-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700"
+    active_link="block py-2 pl-3 pr-4 text-white bg-blue-700 rounded-sm lg:bg-transparent lg:text-blue-700 lg:p-0 dark:text-white"
+
+    ~H"""
+    <li :if={@restricted && @current_scope}>
+      <a
+        href={@href}
+        class={if @conn.request_path == @href, do: active_link, else: passive_link}
+      >
+        {@label}
+      </a>
+    </li>
     """
   end
 

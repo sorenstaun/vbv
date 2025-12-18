@@ -1,37 +1,26 @@
-<Layouts.app flash={@flash} current_scope={@current_scope}>
+<Layouts.app flash={@flash} current_scope={@current_scope} conn={@conn}>
   <.header class="mb-6">
-    Welcome to the Task Management System
-    Listing Tasks
-    <:actions>
-      <.button href={~p"/tasks/new"}>
-        New Task
-      </.button>
-    </:actions>
-  </.header>
+    <p class="mr-2">Home Owners Performance Environment</p>
+    </.header>
+  <div>
+    <p class="mb-4">
+      Welcome to the VBV Home Owners Performance Environment. Use the navigation
+      menu to access different sections of the application.
 
-  <span class="mr-2">
+      Most menu items are restricted to authenticated users.
+    </p>
+    <p>
+      This environment is designed to help home owners monitor and manage the
+      performance of their homes effectively.
+    </p>
+  </div>
+  <!--span class="mr-2">
     <a
       href="/tasks"
       class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg shadow-md transition duration-300 ease-in-out"
     >
       Tasks
     </a>
-  </span>
-  <span class="mr-2">
-    <a
-      href="/states"
-      class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg shadow-md transition duration-300 ease-in-out"
-    >
-      States
-    </a>
-  </span>
-  <span class="mr-2">
-    <a
-      href="/categories"
-      class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg shadow-md transition duration-300 ease-in-out"
-    >
-      Categories
-    </a>
-  </span>
-
+  </span-->
+  
 </Layouts.app>

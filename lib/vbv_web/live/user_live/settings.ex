@@ -8,7 +8,7 @@ defmodule VbvWeb.UserLive.Settings do
   @impl true
   def render(assigns) do
     ~H"""
-    <Layouts.app flash={@flash} current_scope={@current_scope}>
+    <Layouts.app flash={@flash} current_scope={@current_scope} conn={@conn}>
       <div class="text-center">
         <.header>
           User Account Settings

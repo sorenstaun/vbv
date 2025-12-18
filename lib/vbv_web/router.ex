@@ -17,16 +17,22 @@ defmodule VbvWeb.Router do
     plug :accepts, ["json"]
   end
 
+
   scope "/", VbvWeb do
     pipe_through :browser
 
     get "/", PageController, :home
     get "/flowbite", PageController, :flowbite
+  end
+
+  scope "/", VbvWeb do
+    pipe_through [:browser, :require_authenticated_user]
 
     resources "/tasks", TaskController
     resources "/categories", CategoryController
     resources "/states", StateController
   end
+
 
   scope "/.well-known/appspecific", VbvWeb do
     pipe_through :browser
