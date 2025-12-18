@@ -45,7 +45,7 @@ defmodule VbvWeb.Layouts do
               alt="Flowbite Logo"
             />
             <span class="self-center text-xl text-black font-semibold whitespace-nowrap dark:text-white">
-              VBV Tasks
+              HOPE
             </span>
           </a>
           <div class="flex items-center lg:order-2">
