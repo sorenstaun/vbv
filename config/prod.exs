@@ -7,7 +7,7 @@ import Config
 # before starting your production server.
 config :vbv, VbvWeb.Endpoint,
   cache_static_manifest: "priv/static/cache_manifest.json",
-  check_origin: ["http://192.168.87.195", "http://asusbox"]
+  check_origin: ["http://192.168.87.195", "http://asusbox","http://portal.vbv.dk","https://portal.vbv.dk"]
 
 # Configures Swoosh API Client
 config :swoosh, api_client: Swoosh.ApiClient.Req
