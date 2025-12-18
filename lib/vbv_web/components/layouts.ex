@@ -112,10 +112,10 @@ defmodule VbvWeb.Layouts do
             id="mobile-menu-2"
           >
             <ul class="flex flex-col mt-4 font-medium lg:flex-row lg:space-x-8 lg:mt-0">
-              <.topmenu href="/" label="Home" current_scope={assigns} restricted={true} conn={@conn}/>
-              <.topmenu href="/tasks" label="Tasks" current_scope={assigns} restricted={true} conn={@conn}/>
-              <.topmenu href="/categories" label="Categories" current_scope={assigns} restricted={true} conn={@conn}/>
-              <.topmenu href="/states" label="States" current_scope={assigns} restricted={true} conn={@conn}/>
+              <.topmenu href="/" label="Home" current_scope={assigns} restricted={true} conn={Map.get(assigns, :conn)} />
+              <.topmenu href="/tasks" label="Tasks" current_scope={assigns} restricted={true} conn={Map.get(assigns, :conn)} />
+              <.topmenu href="/categories" label="Categories" current_scope={assigns} restricted={true} conn={Map.get(assigns, :conn)} />
+              <.topmenu href="/states" label="States" current_scope={assigns} restricted={true} conn={Map.get(assigns, :conn)} />
             </ul>
           </div>
         </div>
@@ -137,7 +137,7 @@ defmodule VbvWeb.Layouts do
     active_link="block py-2 pl-3 pr-4 text-white bg-blue-700 rounded-sm lg:bg-transparent lg:text-blue-700 lg:p-0 dark:text-white"
 
     ~H"""
-    <li :if={@restricted && @current_scope}>
+    <li :if={@conn && @current_scope}>
       <a
         href={@href}
         class={if @conn.request_path == @href, do: active_link, else: passive_link}
