@@ -6,6 +6,11 @@
 @source "../js";
 @source "../../lib/vbv_web";
 
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+@import "flowbite/src/themes/default";
+@plugin "flowbite/plugin";
+@import "./flowbite.css";
+
 /* A Tailwind plugin that makes "hero-#{ICON}" classes available.
    The heroicons installation itself is managed by your mix.exs */
 @plugin "../vendor/heroicons";
