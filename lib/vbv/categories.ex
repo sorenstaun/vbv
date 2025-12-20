@@ -1,12 +1,12 @@
-defmodule Vbv.TaskCategories do
+defmodule Vbv.Categories do
   @moduledoc """
-  The TaskCategories context.
+  The Categories context.
   """
 
   import Ecto.Query, warn: false
   alias Vbv.Repo
 
-  alias Vbv.TaskCategories.Category
+  alias Vbv.Categories.Category
   alias Vbv.Users.Scope
 
   @doc """

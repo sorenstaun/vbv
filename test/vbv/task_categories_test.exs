@@ -1,13 +1,13 @@
-defmodule Vbv.TaskCategoriesTest do
+defmodule Vbv.CategoriesTest do
   use Vbv.DataCase
 
-  alias Vbv.TaskCategories
+  alias Vbv.Categories
 
   describe "categories" do
-    alias Vbv.TaskCategories.Category
+    alias Vbv.Categories.Category
 
     import Vbv.UsersFixtures, only: [user_scope_fixture: 0]
-    import Vbv.TaskCategoriesFixtures
+    import Vbv.CategoriesFixtures
 
     @invalid_attrs %{name: nil, colour: nil, icon: nil}
 
@@ -16,18 +16,18 @@ defmodule Vbv.TaskCategoriesTest do
       other_scope = user_scope_fixture()
       category = category_fixture(scope)
       other_category = category_fixture(other_scope)
-      assert TaskCategories.list_categories(scope) == [category]
-      assert TaskCategories.list_categories(other_scope) == [other_category]
+      assert Categories.list_categories(scope) == [category]
+      assert Categories.list_categories(other_scope) == [other_category]
     end
 
     test "get_category!/2 returns the category with given id" do
       scope = user_scope_fixture()
       category = category_fixture(scope)
       other_scope = user_scope_fixture()
-      assert TaskCategories.get_category!(scope, category.id) == category
+      assert Categories.get_category!(scope, category.id) == category
 
       assert_raise Ecto.NoResultsError, fn ->
-        TaskCategories.get_category!(other_scope, category.id)
+        Categories.get_category!(other_scope, category.id)
       end
     end
 
@@ -36,7 +36,7 @@ defmodule Vbv.TaskCategoriesTest do
       scope = user_scope_fixture()
 
       assert {:ok, %Category{} = category} =
-               TaskCategories.create_category(scope, valid_attrs)
+               Categories.create_category(scope, valid_attrs)
 
       assert category.name == "some name"
       assert category.colour == "some colour"
@@ -48,7 +48,7 @@ defmodule Vbv.TaskCategoriesTest do
       scope = user_scope_fixture()
 
       assert {:error, %Ecto.Changeset{}} =
-               TaskCategories.create_category(scope, @invalid_attrs)
+               Categories.create_category(scope, @invalid_attrs)
     end
 
     test "update_category/3 with valid data updates the category" do
@@ -62,7 +62,7 @@ defmodule Vbv.TaskCategoriesTest do
       }
 
       assert {:ok, %Category{} = category} =
-               TaskCategories.update_category(scope, category, update_attrs)
+               Categories.update_category(scope, category, update_attrs)
 
       assert category.name == "some updated name"
       assert category.colour == "some updated colour"
@@ -75,7 +75,7 @@ defmodule Vbv.TaskCategoriesTest do
       category = category_fixture(scope)
 
       assert_raise MatchError, fn ->
-        TaskCategories.update_category(other_scope, category, %{})
+        Categories.update_category(other_scope, category, %{})
       end
     end
 
@@ -84,18 +84,18 @@ defmodule Vbv.TaskCategoriesTest do
       category = category_fixture(scope)
 
       assert {:error, %Ecto.Changeset{}} =
-               TaskCategories.update_category(scope, category, @invalid_attrs)
+               Categories.update_category(scope, category, @invalid_attrs)
 
-      assert category == TaskCategories.get_category!(scope, category.id)
+      assert category == Categories.get_category!(scope, category.id)
     end
 
     test "delete_category/2 deletes the category" do
       scope = user_scope_fixture()
       category = category_fixture(scope)
-      assert {:ok, %Category{}} = TaskCategories.delete_category(scope, category)
+      assert {:ok, %Category{}} = Categories.delete_category(scope, category)
 
       assert_raise Ecto.NoResultsError, fn ->
-        TaskCategories.get_category!(scope, category.id)
+        Categories.get_category!(scope, category.id)
       end
     end
 
@@ -105,14 +105,14 @@ defmodule Vbv.TaskCategoriesTest do
       category = category_fixture(scope)
 
       assert_raise MatchError, fn ->
-        TaskCategories.delete_category(other_scope, category)
+        Categories.delete_category(other_scope, category)
       end
     end
 
     test "change_category/2 returns a category changeset" do
       scope = user_scope_fixture()
       category = category_fixture(scope)
-      assert %Ecto.Changeset{} = TaskCategories.change_category(scope, category)
+      assert %Ecto.Changeset{} = Categories.change_category(scope, category)
     end
   end
 end

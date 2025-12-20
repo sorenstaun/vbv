@@ -1,4 +1,4 @@
-defmodule Vbv.Repo.Migrations.CreateTaskCategories do
+defmodule Vbv.Repo.Migrations.CreateCategories do
   use Ecto.Migration
 
   def change do

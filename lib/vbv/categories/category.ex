@@ -1,4 +1,4 @@
-defmodule Vbv.TaskCategories.Category do
+defmodule Vbv.Categories.Category do
   use Ecto.Schema
   import Ecto.Changeset
 

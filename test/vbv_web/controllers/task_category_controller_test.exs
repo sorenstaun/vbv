@@ -1,7 +1,7 @@
 defmodule VbvWeb.CategoryControllerTest do
   use VbvWeb.ConnCase
 
-  import Vbv.TaskCategoriesFixtures
+  import Vbv.CategoriesFixtures
 
   @create_attrs %{name: "some name", colour: "some colour", icon: "some icon"}
   @update_attrs %{

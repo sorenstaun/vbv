@@ -1,7 +1,5 @@
-defmodule Vbv.Context.StateContext do
-  @moduledoc """
-  The Tasks context.
-  """
+defmodule Vbv.States do
+  @moduledoc false
 
   import Ecto.Query, warn: false
 
@@ -12,6 +10,22 @@ defmodule Vbv.Context.StateContext do
     key = scope.user.id
 
     Phoenix.PubSub.broadcast(Vbv.PubSub, "user:#{key}:states", message)
+  end
+
+  @doc """
+  Subscribes to scoped notifications about any state changes.
+
+  The broadcasted messages match the pattern:
+
+    * {:created, %State{}}
+    * {:updated, %State{}}
+    * {:deleted, %State{}}
+
+  """
+  def subscribe_states(scope) do
+    key = scope.user.id
+
+    Phoenix.PubSub.subscribe(Vbv.PubSub, "user:#{key}:states")
   end
 
   @doc """
@@ -131,5 +145,4 @@ defmodule Vbv.Context.StateContext do
 
     State.changeset(state, attrs, scope)
   end
-
 end

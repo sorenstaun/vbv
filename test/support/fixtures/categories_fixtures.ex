@@ -1,7 +1,7 @@
-defmodule Vbv.TaskCategoriesFixtures do
+defmodule Vbv.CategoriesFixtures do
   @moduledoc """
   This module defines test helpers for creating
-  entities via the `Vbv.TaskCategories` context.
+  entities via the `Vbv.Categories` context.
   """
 
   @doc """
@@ -15,7 +15,7 @@ defmodule Vbv.TaskCategoriesFixtures do
         name: "some name"
       })
 
-    {:ok, category} = Vbv.TaskCategories.create_category(scope, attrs)
+    {:ok, category} = Vbv.Categories.create_category(scope, attrs)
     category
   end
 end

@@ -4,12 +4,13 @@ defmodule VbvWeb.TaskController do
   require IEx
   alias Vbv.Tasks
   alias Vbv.Tasks.Task
-  alias Vbv.Context.TaskContext
 
   def index(conn, _params) do
-    tasks = Tasks.list_tasks(conn.assigns.current_scope)
-      |> TaskContext.task_preload()
-    render(conn, :index, tasks: tasks, state_options: TaskContext.state_options(conn))
+    tasks =
+      Tasks.list_tasks(conn.assigns.current_scope)
+      |> Tasks.task_preload()
+
+    render(conn, :index, tasks: tasks, state_options: Tasks.state_options(conn))
   end
 
   def new(conn, _params) do
@@ -17,8 +18,9 @@ defmodule VbvWeb.TaskController do
       Tasks.change_task(conn.assigns.current_scope, %Task{
         user_id: conn.assigns.current_scope.user.id
       })
-    states = TaskContext.state_options(conn)
-    categories = TaskContext.category_options(conn)
+
+    states = Tasks.state_options(conn)
+    categories = Tasks.category_options(conn)
 
     render(conn, :new, changeset: changeset, states: states, categories: categories)
   end
@@ -34,27 +36,35 @@ defmodule VbvWeb.TaskController do
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, :new,
           changeset: changeset,
-          states: TaskContext.state_options(conn),
-          categories: TaskContext.category_options(conn)
+          states: Tasks.state_options(conn),
+          categories: Tasks.category_options(conn)
         )
     end
   end
 
   def show(conn, %{"id" => id}) do
     task = Tasks.get_task!(conn.assigns.current_scope, id)
+
     task =
       task
-      |> TaskContext.task_preload()
+      |> Tasks.task_preload()
 
     render(conn, :show, task: task)
   end
 
   def edit(conn, %{"id" => id}) do
-    task = Tasks.get_task!(conn.assigns.current_scope, id)
-     |> TaskContext.task_preload()
+    task =
+      Tasks.get_task!(conn.assigns.current_scope, id)
+      |> Tasks.task_preload()
+
     changeset = Tasks.change_task(conn.assigns.current_scope, task)
-    # IEx.pry
-    render(conn, :edit, changeset: changeset, task: task, states: TaskContext.state_options(conn), categories: TaskContext.category_options(conn))
+    IEx.pry
+    render(conn, :edit,
+      changeset: changeset,
+      task: task,
+      states: Tasks.state_options(conn),
+      categories: Tasks.category_options(conn)
+    )
   end
 
   def update(conn, %{"id" => id, "task" => task_params}) do
@@ -70,8 +80,8 @@ defmodule VbvWeb.TaskController do
         render(conn, :edit,
           task: task,
           changeset: changeset,
-          states: TaskContext.state_options(conn),
-          categories: TaskContext.category_options(conn)
+          states: Tasks.state_options(conn),
+          categories: Tasks.category_options(conn)
         )
     end
   end

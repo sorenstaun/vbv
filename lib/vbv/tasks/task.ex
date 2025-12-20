@@ -7,8 +7,16 @@ defmodule Vbv.Tasks.Task do
     field :description, :string
     field :deadline, :date
     field :user_id, :id
+    field :rrule, :string
 
-    belongs_to :category, Vbv.TaskCategories.Category
+    # Virtual fields for tasks
+
+    field :freq, :string, virtual: true
+    field :interval, :integer, virtual: true
+
+    # Associations
+
+    belongs_to :category, Vbv.Categories.Category
     belongs_to :state, Vbv.States.State
 
     timestamps(type: :utc_datetime)
@@ -17,7 +25,7 @@ defmodule Vbv.Tasks.Task do
   @doc false
   def changeset(task, attrs, user_scope) do
     task
-    |> cast(attrs, [:name, :description, :deadline, :state_id, :category_id])
+    |> cast(attrs, [:name, :description, :deadline, :state_id, :category_id, :rrule])
     |> validate_required([:name, :description, :deadline])
     |> put_change(:user_id, user_scope.user.id)
   end

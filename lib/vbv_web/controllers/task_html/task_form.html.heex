@@ -1,23 +1,54 @@
-<.form :let={f} for={@changeset} action={@action}>
-  <.input field={f[:name]} type="text" label="Name" />
-  <.input field={f[:description]} type="textarea" label="Description" />
-  <.input field={f[:deadline]} type="date" label="Deadline" />
+<.form :let={form} for={@changeset} action={@action}>
+  <.input field={form[:name]} type="text" label="Name" />
+  <.input field={form[:description]} type="textarea" label="Description" />
+  <.input field={form[:deadline]} type="date" label="Deadline" />
 
-<.input 
-    field={f[:state_id]} 
-    type="radio" 
-    label="Task State" 
-    value={f[:state_id].value}
-    options={@states} 
+  <.input
+    field={form[:state_id]}
+    type="radio"
+    label="Task State"
+    value={form[:state_id].value}
+    options={@states}
   />
-  
-  <.input 
-    field={f[:category_id]} 
-    type="radio" 
-    label="Category" 
-    value={f[:category_id].value}
-    options={@categories} 
+
+  <.input
+    field={form[:category_id]}
+    type="radio"
+    label="Category"
+    value={form[:category_id].value}
+    options={@categories}
   />
+
+  <.input
+    field={form[:freq]}
+    type="select"
+    label="Frequency"
+    options={["DAILY", "WEEKLY", "MONTHLY"]}
+  />
+
+  <.input
+    field={form[:interval]}
+    type="number"
+    label="Interval"
+    value="1"
+  />
+  <input type="number" name="interval" value="1" min="1" />
+
+  <%= if {form[:freq]} == "WEEKLY" do %>
+    <div class="weekday-selector">
+      <option value="Mon">Monday</option>
+      <option value="Tue">Tuesday</option>
+      <option value="Wed">Wednesday</option>
+      <option value="Thu">Thursday</option>
+      <option value="Fri">Friday</option>
+      <option value="Sat">Saturday</option>
+      <option value="Sun">Sunday</option>
+    </div>
+  <% end %>
+
+  <div class="mt-4 p-2 bg-gray-100 font-mono">
+    Generated Rule: {@changeset.data.rrule}
+  </div>
 
   <footer>
     <.button variant="primary">Save Task</.button>
