@@ -23,7 +23,12 @@
     field={form[:freq]}
     type="select"
     label="Frequency"
-    options={["DAILY", "WEEKLY", "MONTHLY"]}
+    options={[
+      {"Daily", "DAILY"},
+      {"Weekly", "WEEKLY"},
+      {"Monthly", "MONTHLY"},
+      {"Yearly", "YEARLY"}
+    ]}
   />
 
   <.input
@@ -34,17 +39,22 @@
   />
   <input type="number" name="interval" value="1" min="1" />
 
-  <%= if {form[:freq]} == "WEEKLY" do %>
-    <div class="weekday-selector">
-      <option value="Mon">Monday</option>
-      <option value="Tue">Tuesday</option>
-      <option value="Wed">Wednesday</option>
-      <option value="Thu">Thursday</option>
-      <option value="Fri">Friday</option>
-      <option value="Sat">Saturday</option>
-      <option value="Sun">Sunday</option>
-    </div>
-  <% end %>
+  <.input
+    :if={form[:freq] == "WEEKLY"}
+    field={form[:byday]}
+    type="select"
+    label="Select Days of the Week"
+    multiple
+    options={[
+      {"Monday", "MO"},
+      {"Tuesday", "TU"},
+      {"Wednesday", "WE"},
+      {"Thursday", "TH"},
+      {"Friday", "FR"},
+      {"Saturday", "SA"},
+      {"Sunday", "SU"}
+    ]}
+  />
 
   <div class="mt-4 p-2 bg-gray-100 font-mono">
     Generated Rule: {@changeset.data.rrule}

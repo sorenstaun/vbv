@@ -57,8 +57,9 @@ defmodule VbvWeb.TaskController do
       Tasks.get_task!(conn.assigns.current_scope, id)
       |> Tasks.task_preload()
 
+    IO.inspect(Tasks.state_options(conn), label: "State options in edit")
+
     changeset = Tasks.change_task(conn.assigns.current_scope, task)
-    IEx.pry
     render(conn, :edit,
       changeset: changeset,
       task: task,

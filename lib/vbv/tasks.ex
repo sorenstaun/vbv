@@ -145,6 +145,10 @@ defmodule Vbv.Tasks do
   def update_task(%Scope{} = scope, %Task{} = task, attrs) do
     true = task.user_id == scope.user.id
 
+    IO.inspect(attrs, label: "Updating task with attrs")
+    IO.inspect(task, label: "Current task data")
+    IO.inspect(scope, label: "User scope")
+
     with {:ok, task = %Task{}} <-
            task
            |> Task.changeset(attrs, scope)
@@ -167,6 +171,5 @@ defmodule Vbv.Tasks do
     true = task.user_id == scope.user.id
 
     Task.changeset(task, attrs, scope)
-
   end
 end
