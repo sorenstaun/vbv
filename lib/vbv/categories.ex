@@ -40,8 +40,8 @@ defmodule Vbv.Categories do
       [%Category{}, ...]
 
   """
-  def list_categories(%Scope{} = scope) do
-    Repo.all_by(Category, user_id: scope.user.id)
+  def list_categories() do
+    Repo.all(Category)
   end
 
   @doc """
@@ -59,7 +59,7 @@ defmodule Vbv.Categories do
 
   """
   def get_category!(%Scope{} = scope, id) do
-    Repo.get_by!(Category, id: id, user_id: scope.user.id)
+    Repo.get_by!(Category, id: id)
   end
 
   @doc """
@@ -77,7 +77,7 @@ defmodule Vbv.Categories do
   def create_category(%Scope{} = scope, attrs) do
     with {:ok, category = %Category{}} <-
            %Category{}
-           |> Category.changeset(attrs, scope)
+           |> Category.changeset(attrs)
            |> Repo.insert() do
       broadcast_category(scope, {:created, category})
       {:ok, category}
@@ -97,11 +97,10 @@ defmodule Vbv.Categories do
 
   """
   def update_category(%Scope{} = scope, %Category{} = category, attrs) do
-    true = category.user_id == scope.user.id
 
     with {:ok, category = %Category{}} <-
            category
-           |> Category.changeset(attrs, scope)
+           |> Category.changeset(attrs)
            |> Repo.update() do
       broadcast_category(scope, {:updated, category})
       {:ok, category}
@@ -121,7 +120,6 @@ defmodule Vbv.Categories do
 
   """
   def delete_category(%Scope{} = scope, %Category{} = category) do
-    true = category.user_id == scope.user.id
 
     with {:ok, category = %Category{}} <-
            Repo.delete(category) do
@@ -139,9 +137,7 @@ defmodule Vbv.Categories do
       %Ecto.Changeset{data: %Category{}}
 
   """
-  def change_category(%Scope{} = scope, %Category{} = category, attrs \\ %{}) do
-    true = category.user_id == scope.user.id
-
-    Category.changeset(category, attrs, scope)
+  def change_category(%Category{} = category, attrs \\ %{}) do
+    Category.changeset(category, attrs)
   end
 end

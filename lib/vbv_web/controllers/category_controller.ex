@@ -5,15 +5,13 @@ defmodule VbvWeb.CategoryController do
   alias Vbv.Categories.Category
 
   def index(conn, _params) do
-    categories = Categories.list_categories(conn.assigns.current_scope)
+    categories = Categories.list_categories()
     render(conn, :index, categories: categories)
   end
 
   def new(conn, _params) do
     changeset =
-      Categories.change_category(conn.assigns.current_scope, %Category{
-        user_id: conn.assigns.current_scope.user.id
-      })
+      Categories.change_category(conn.assigns.current_scope, %Category{})
 
     render(conn, :new, changeset: changeset)
   end
@@ -37,7 +35,7 @@ defmodule VbvWeb.CategoryController do
 
   def edit(conn, %{"id" => id}) do
     category = Categories.get_category!(conn.assigns.current_scope, id)
-    changeset = Categories.change_category(conn.assigns.current_scope, category)
+    changeset = Categories.change_category(category)
     render(conn, :edit, category: category, changeset: changeset)
   end
 

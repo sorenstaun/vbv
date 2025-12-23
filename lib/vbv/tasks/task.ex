@@ -8,6 +8,7 @@ defmodule Vbv.Tasks.Task do
     field :deadline, :date
     field :user_id, :id
     field :rrule, :string
+    field :private, :boolean, default: false
 
     # Virtual fields for tasks
 
@@ -25,7 +26,7 @@ defmodule Vbv.Tasks.Task do
   @doc false
   def changeset(task, attrs, user_scope) do
     task
-    |> cast(attrs, [:name, :description, :deadline, :state_id, :category_id, :rrule])
+    |> cast(attrs, [:name, :description, :deadline, :state_id, :category_id, :rrule, :private])
     |> validate_required([:name, :description, :deadline])
     |> put_change(:user_id, user_scope.user.id)
   end

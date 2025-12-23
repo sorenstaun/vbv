@@ -17,7 +17,6 @@ defmodule VbvWeb.Router do
     plug :accepts, ["json"]
   end
 
-
   scope "/", VbvWeb do
     pipe_through :browser
 
@@ -28,11 +27,10 @@ defmodule VbvWeb.Router do
   scope "/", VbvWeb do
     pipe_through [:browser, :require_authenticated_user]
 
-    resources "/tasks", TaskController
+    #    resources "/tasks", TaskController
     resources "/categories", CategoryController
     resources "/states", StateController
   end
-
 
   scope "/.well-known/appspecific", VbvWeb do
     pipe_through :browser
@@ -71,6 +69,10 @@ defmodule VbvWeb.Router do
       on_mount: [{VbvWeb.UserAuth, :require_authenticated}] do
       live "/users/settings", UserLive.Settings, :edit
       live "/users/settings/confirm-email/:token", UserLive.Settings, :confirm_email
+      live "/tasks", TaskLive.Index, :index
+      live "/tasks/new", TaskLive.Form, :new
+      live "/tasks/:id", TaskLive.Show, :show
+      live "/tasks/:id/edit", TaskLive.Form, :edit
     end
 
     post "/users/update-password", UserSessionController, :update_password

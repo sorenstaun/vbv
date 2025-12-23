@@ -42,30 +42,20 @@ defmodule Vbv.Tasks do
 
   """
   def list_tasks(%Scope{} = scope) do
-    Repo.all_by(Task, user_id: scope.user.id)
+    Task
+    |> where([t], t.user_id == ^scope.user.id or t.private == false)
+    |> Repo.all()
+    |> task_preload()
   end
 
-  @doc """
-  Gets a single task.
-
-  Raises `Ecto.NoResultsError` if the Task does not exist.
-
-  ## Examples
-
-      iex> get_task!(scope, 123)
-      %Task{}
-
-      iex> get_task!(scope, 456)
-      ** (Ecto.NoResultsError)
-
-  """
   def get_task!(%Scope{} = scope, id) do
-    Repo.get_by!(
-      # Ensure you add :state to the preload list
-      from(t in Task, preload: [:category, :state]),
-      id: id,
-      user_id: scope.user.id
-    )
+    user_id = scope.user.id
+
+    Task
+    |> preload([:category, :state])
+    |> where([t], t.id == ^id)
+    |> where([t], t.user_id == ^user_id or t.private == false)
+    |> Repo.one!()
   end
 
   @doc """
@@ -119,14 +109,12 @@ defmodule Vbv.Tasks do
   end
 
   def state_options(conn) do
-    conn.assigns.current_scope
-    |> Vbv.States.list_states()
+    Vbv.States.list_states()
     |> Enum.map(&{&1.name, &1.id})
   end
 
   def category_options(conn) do
-    conn.assigns.current_scope
-    |> Vbv.Categories.list_categories()
+    Vbv.Categories.list_categories()
     |> Enum.map(&{&1.name, &1.id})
   end
 
@@ -144,10 +132,6 @@ defmodule Vbv.Tasks do
   """
   def update_task(%Scope{} = scope, %Task{} = task, attrs) do
     true = task.user_id == scope.user.id
-
-    IO.inspect(attrs, label: "Updating task with attrs")
-    IO.inspect(task, label: "Current task data")
-    IO.inspect(scope, label: "User scope")
 
     with {:ok, task = %Task{}} <-
            task
@@ -168,8 +152,6 @@ defmodule Vbv.Tasks do
 
   """
   def change_task(%Scope{} = scope, %Task{} = task, attrs \\ %{}) do
-    true = task.user_id == scope.user.id
-
     Task.changeset(task, attrs, scope)
   end
 end

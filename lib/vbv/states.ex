@@ -37,8 +37,8 @@ defmodule Vbv.States do
       [%State{}, ...]
 
   """
-  def list_states(scope) do
-    Repo.all_by(State, user_id: scope.user.id)
+  def list_states() do
+    Repo.all(State)
   end
 
   @doc """
@@ -55,8 +55,8 @@ defmodule Vbv.States do
       ** (Ecto.NoResultsError)
 
   """
-  def get_state!(scope, id) do
-    Repo.get_by!(State, id: id, user_id: scope.user.id)
+  def get_state!(id) do
+    Repo.get_by!(State, id: id)
   end
 
   @doc """
@@ -74,7 +74,7 @@ defmodule Vbv.States do
   def create_state(scope, attrs) do
     with {:ok, state = %State{}} <-
            %State{}
-           |> State.changeset(attrs, scope)
+           |> State.changeset(attrs)
            |> Repo.insert() do
       broadcast_state(scope, {:created, state})
       {:ok, state}
@@ -94,11 +94,10 @@ defmodule Vbv.States do
 
   """
   def update_state(scope, %State{} = state, attrs) do
-    true = state.user_id == scope.user.id
 
     with {:ok, state = %State{}} <-
            state
-           |> State.changeset(attrs, scope)
+           |> State.changeset(attrs)
            |> Repo.update() do
       broadcast_state(scope, {:updated, state})
       {:ok, state}
@@ -118,7 +117,6 @@ defmodule Vbv.States do
 
   """
   def delete_state(scope, %State{} = state) do
-    true = state.user_id == scope.user.id
 
     with {:ok, state = %State{}} <-
            Repo.delete(state) do
@@ -136,13 +134,7 @@ defmodule Vbv.States do
       %Ecto.Changeset{data: %State{}}
 
   """
-  def change_state(scope, %State{} = state, attrs \\ %{}) do
-    # For new states the user_id is nil — only enforce ownership check
-    # when the state already has a user_id.
-    if state.user_id != nil do
-      true = state.user_id == scope.user.id
-    end
-
-    State.changeset(state, attrs, scope)
+  def change_state(%State{} = state, attrs \\ %{}) do
+    State.changeset(state, attrs)
   end
 end

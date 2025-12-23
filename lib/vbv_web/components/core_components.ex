@@ -233,18 +233,17 @@ defmodule VbvWeb.CoreComponents do
     <div class="fieldset mb-2">
       <label>
         <span :if={@label} class="label mb-1">{@label}</span>
-          <div class="radio-option" :for={{label, value} <- @options}>
-            <input
-              type="radio"
-              name={@name}
-              hans={value}
-              value={value}
-              checked={@value == value}
-              class={@class || "radio"}
-              {@rest}
-            />
-            <label for={Phoenix.HTML.Form.normalize_value("radio", @value)}>{label}</label>
-          </div>
+        <div :for={{label, value} <- @options} class="radio-option">
+          <input
+            type="radio"
+            name={@name}
+            value={value}
+            checked={@value == value}
+            class={@class || "radio"}
+            {@rest}
+          />
+          <label for={Phoenix.HTML.Form.normalize_value("radio", @value)}>{label}</label>
+        </div>
       </label>
       <.error :for={msg <- @errors}>{msg}</.error>
     </div>
@@ -290,6 +289,30 @@ defmodule VbvWeb.CoreComponents do
         />
       </label>
       <.error :for={msg <- @errors}>{msg}</.error>
+    </div>
+    """
+  end
+
+  def radio_group(assigns) do
+    ~H"""
+    <div phx-feedback-for={@field.name}>
+      <span :if={@label} class="label mb-1">{@label}</span>
+      <div class="mt-2 space-y-2">
+        <div :for={{label, value} <- @options} class="flex items-center gap-2">
+          <input
+            type="radio"
+            name={@field.name}
+            id={"#{@field.id}_#{value}"}
+            value={value}
+            checked={to_string(@field.value) == to_string(value)}
+            class="h-4 w-4 border-zinc-300 text-zinc-900 focus:ring-zinc-900"
+          />
+          <label for={"#{@field.id}_#{value}"} class="text-sm leading-6 text-zinc-600">
+            {label}
+          </label>
+        </div>
+      </div>
+      <.error :for={msg <- @field.errors}>{msg}</.error>
     </div>
     """
   end
@@ -417,7 +440,7 @@ defmodule VbvWeb.CoreComponents do
     """
   end
 
-@doc """
+  @doc """
   Renders a [Heroicon](https://heroicons.com).
 
   Heroicons come in three styles – outline, solid, and mini.
