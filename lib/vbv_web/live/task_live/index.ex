@@ -7,7 +7,7 @@ defmodule VbvWeb.TaskLive.Index do
   @impl true
   def render(assigns) do
     ~H"""
-    <Layouts.app flash={@flash} current_scope={@current_scope}>
+    <Layouts.app flash={@flash} current_scope={@current_scope} socket={@socket}>
       <.header>
         Listing Tasks
         <:actions>
@@ -22,7 +22,7 @@ defmodule VbvWeb.TaskLive.Index do
         rows={@streams.tasks}
         row_click={fn {_id, task} -> JS.navigate(~p"/tasks/#{task}") end}
       >
-        <:col :let={{_id, task}} label="Name">{task.name}</:col>
+        <:col :let={{_id, task}} label="Name">{task.name}<.icon :if={task.private} name="hero-lock-closed"/></:col>
         <:col :let={{_id, task}} label="Deadline">{task.deadline}</:col>
         <:col :let={{_id, task}} label="Category"><.category task={task} /></:col>
         <:col :let={{_id, task}} label="State"><.state task={task} /></:col>

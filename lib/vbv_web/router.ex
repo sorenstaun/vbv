@@ -66,7 +66,7 @@ defmodule VbvWeb.Router do
     pipe_through [:browser, :require_authenticated_user]
 
     live_session :require_authenticated_user,
-      on_mount: [{VbvWeb.UserAuth, :require_authenticated}] do
+      on_mount: [{VbvWeb.UserAuth, :require_authenticated}, {VbvWeb.SaveRequestUri, :save_request_uri}] do
       live "/users/settings", UserLive.Settings, :edit
       live "/users/settings/confirm-email/:token", UserLive.Settings, :confirm_email
       live "/tasks", TaskLive.Index, :index
