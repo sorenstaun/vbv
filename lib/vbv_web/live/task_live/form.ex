@@ -18,13 +18,13 @@ defmodule VbvWeb.TaskLive.Form do
         <.input field={@form[:description]} type="textarea" label="Description" />
         <.input field={@form[:deadline]} type="date" label="Deadline" />
 
-        <.radio_group
+        <.input type="radiogroup"
           field={@form[:state_id]}
           label="State"
           options={@states}
         />
 
-        <.radio_group
+        <.input type="radiogroup"
           field={@form[:category_id]}
           label="Category"
           options={@categories}
@@ -57,9 +57,8 @@ defmodule VbvWeb.TaskLive.Form do
         <.input
           :if={@form.params["freq"] == "WEEKLY"}
           field={@form[:byday]}
-          type="select"
+          type="checkgroup"
           label="Select Days of the Week"
-          multiple
           options={[
             {"Monday", "MO"},
             {"Tuesday", "TU"},
@@ -105,8 +104,8 @@ defmodule VbvWeb.TaskLive.Form do
   defp apply_action(socket, :edit, %{"id" => id}) do
     task = Tasks.get_task!(socket.assigns.current_scope, id)
 
-    states = Tasks.state_options(socket)
-    categories = Tasks.category_options(socket)
+    states = Tasks.state_options()
+    categories = Tasks.category_options()
 
     socket
     |> assign(:page_title, "Edit Task")
@@ -119,8 +118,8 @@ defmodule VbvWeb.TaskLive.Form do
   defp apply_action(socket, :new, _params) do
     task = %Task{user_id: socket.assigns.current_scope.user.id}
 
-    states = Tasks.state_options(socket)
-    categories = Tasks.category_options(socket)
+    states = Tasks.state_options()
+    categories = Tasks.category_options()
 
     socket
     |> assign(:page_title, "New Task")
@@ -133,8 +132,7 @@ defmodule VbvWeb.TaskLive.Form do
   @impl true
   def handle_event("validate", %{"task" => task_params}, socket) do
     changeset = Tasks.change_task(socket.assigns.current_scope, socket.assigns.task, task_params)
-    form = to_form(changeset, action: :validate)
-    {:noreply, assign(socket, form: to_form(changeset, action: :validate))}
+    {:noreply, assign(socket, form: to_form(Map.put(changeset, :action, :validate)))}
   end
 
   def handle_event("save", %{"task" => task_params}, socket) do

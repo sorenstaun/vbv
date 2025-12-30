@@ -108,12 +108,12 @@ defmodule Vbv.Tasks do
     end
   end
 
-  def state_options(conn) do
+  def state_options() do
     Vbv.States.list_states()
     |> Enum.map(&{&1.name, &1.id})
   end
 
-  def category_options(conn) do
+  def category_options() do
     Vbv.Categories.list_categories()
     |> Enum.map(&{&1.name, &1.id})
   end

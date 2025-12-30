@@ -29,18 +29,18 @@ defmodule VbvWeb.CategoryController do
   end
 
   def show(conn, %{"id" => id}) do
-    category = Categories.get_category!(conn.assigns.current_scope, id)
+    category = Categories.get_category!(id)
     render(conn, :show, category: category)
   end
 
   def edit(conn, %{"id" => id}) do
-    category = Categories.get_category!(conn.assigns.current_scope, id)
+    category = Categories.get_category!(id)
     changeset = Categories.change_category(category)
     render(conn, :edit, category: category, changeset: changeset)
   end
 
   def update(conn, %{"id" => id, "category" => category_params}) do
-    category = Categories.get_category!(conn.assigns.current_scope, id)
+    category = Categories.get_category!(id)
 
     case Categories.update_category(
            conn.assigns.current_scope,
@@ -58,7 +58,7 @@ defmodule VbvWeb.CategoryController do
   end
 
   def delete(conn, %{"id" => id}) do
-    category = Categories.get_category!(conn.assigns.current_scope, id)
+    category = Categories.get_category!(id)
 
     {:ok, _category} =
       Categories.delete_category(conn.assigns.current_scope, category)

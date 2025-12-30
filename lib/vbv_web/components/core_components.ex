@@ -152,7 +152,7 @@ defmodule VbvWeb.CoreComponents do
   attr :type, :string,
     default: "text",
     values: ~w(checkbox color date datetime-local email file month number password
-               search select tel text textarea time url week radio)
+               search select tel text textarea time url week radio radiogroup checkgroup)
 
   attr :field, Phoenix.HTML.FormField,
     doc: "a form field struct retrieved from the form, for example: @form[:email]"
@@ -161,6 +161,7 @@ defmodule VbvWeb.CoreComponents do
   attr :checked, :boolean, doc: "the checked flag for checkbox inputs"
   attr :prompt, :string, default: nil, doc: "the prompt for select inputs"
   attr :options, :list, doc: "the options to pass to Phoenix.HTML.Form.options_for_select/2"
+  attr :required, :boolean, default: false, doc: "the required flag for inputs"
   attr :multiple, :boolean, default: false, doc: "the multiple flag for select inputs"
   attr :class, :string, default: nil, doc: "the input class to use over defaults"
   attr :error_class, :string, default: nil, doc: "the input error class to use over defaults"
@@ -168,6 +169,7 @@ defmodule VbvWeb.CoreComponents do
   attr :rest, :global,
     include: ~w(accept autocomplete capture cols disabled form list max maxlength min minlength
                 multiple pattern placeholder readonly required rows size step)
+
 
   def input(%{field: %Phoenix.HTML.FormField{} = field} = assigns) do
     errors = if Phoenix.Component.used_input?(field), do: field.errors, else: []
@@ -270,6 +272,58 @@ defmodule VbvWeb.CoreComponents do
     """
   end
 
+  def input(%{type: "checkgroup"} = assigns) do
+    ~H"""
+    <div phx-feedback-for={@name} class="text-sm">
+      <label for={@id} required={@required}>{@label}</label>
+      <div class="mt-1 w-full bg-white border border-gray-300 ...">
+        <div class="grid grid-cols-1 gap-1 text-sm items-baseline">
+          <input type="hidden" name={@name} value="" />
+          <div :for={{label, value} <- @options} class="...">
+            <label for={"#{@name}-#{value}"} class="...">
+              <input
+                type="checkbox"
+                id={"#{@name}-#{value}"}
+                name={@name}
+                value={value}
+                checked={value in @value}
+                class="mr-2 h-4 w-4 rounded ..."
+                {@rest}
+              />
+              {label}
+            </label>
+          </div>
+        </div>
+      </div>
+      <.error :for={msg <- @errors}>{msg}</.error>
+    </div>
+    """
+  end
+
+  def input(%{type: "radiogroup"} = assigns) do
+    ~H"""
+    <div phx-feedback-for={@name}>
+      <span :if={@label} class="label mb-1">{@label}</span>
+      <div class="mt-2 space-y-2">
+        <div :for={{label, value} <- @options} class="flex items-center gap-2">
+          <input
+            type="radio"
+            name={@name}
+            id={"#{@id}_#{value}"}
+            value={value}
+            checked={to_string(@value) == to_string(value)}
+            class="h-4 w-4 border-zinc-300 text-zinc-900 focus:ring-zinc-900"
+          />
+          <label for={"#{@id}_#{value}"} class="text-sm leading-6 text-zinc-600">
+            {label}
+          </label>
+        </div>
+      </div>
+      <.error :for={msg <- @errors}>{msg}</.error>
+    </div>
+    """
+  end
+
   # All other inputs text, datetime-local, url, password, etc. are handled here...
   def input(assigns) do
     ~H"""
@@ -289,30 +343,6 @@ defmodule VbvWeb.CoreComponents do
         />
       </label>
       <.error :for={msg <- @errors}>{msg}</.error>
-    </div>
-    """
-  end
-
-  def radio_group(assigns) do
-    ~H"""
-    <div phx-feedback-for={@field.name}>
-      <span :if={@label} class="label mb-1">{@label}</span>
-      <div class="mt-2 space-y-2">
-        <div :for={{label, value} <- @options} class="flex items-center gap-2">
-          <input
-            type="radio"
-            name={@field.name}
-            id={"#{@field.id}_#{value}"}
-            value={value}
-            checked={to_string(@field.value) == to_string(value)}
-            class="h-4 w-4 border-zinc-300 text-zinc-900 focus:ring-zinc-900"
-          />
-          <label for={"#{@field.id}_#{value}"} class="text-sm leading-6 text-zinc-600">
-            {label}
-          </label>
-        </div>
-      </div>
-      <.error :for={msg <- @field.errors}>{msg}</.error>
     </div>
     """
   end

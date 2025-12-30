@@ -17,7 +17,7 @@ defmodule VbvWeb.StateController do
   end
 
   def create(conn, %{"state" => state_params}) do
-    case States.create_state(state_params) do
+    case States.create_state(conn.assigns.current_scope, state_params) do
       {:ok, state} ->
         conn
         |> put_flash(:info, "Task state created successfully.")
@@ -42,7 +42,7 @@ defmodule VbvWeb.StateController do
   def update(conn, %{"id" => id, "state" => state_params}) do
     state = States.get_state!(id)
 
-    case States.update_state(conn.assigns.current_scope,state, state_params) do
+    case States.update_state(conn.assigns.current_scope, state, state_params) do
       {:ok, state} ->
         conn
         |> put_flash(:info, "Task state updated successfully.")
@@ -55,7 +55,7 @@ defmodule VbvWeb.StateController do
 
   def delete(conn, %{"id" => id}) do
     state = States.get_state!(id)
-    {:ok, _state} = States.delete_state(state)
+    {:ok, _state} = States.delete_state(conn.assigns.current_scope, state)
 
     conn
     |> put_flash(:info, "Task state deleted successfully.")

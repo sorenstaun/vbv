@@ -58,7 +58,7 @@ defmodule Vbv.Categories do
       ** (Ecto.NoResultsError)
 
   """
-  def get_category!(%Scope{} = scope, id) do
+  def get_category!(id) do
     Repo.get_by!(Category, id: id)
   end
 

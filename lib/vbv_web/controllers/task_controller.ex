@@ -10,7 +10,7 @@ defmodule VbvWeb.TaskController do
       Tasks.list_tasks(conn.assigns.current_scope)
       |> Tasks.task_preload()
 
-    render(conn, :index, tasks: tasks, state_options: Tasks.state_options(conn))
+    render(conn, :index, tasks: tasks, state_options: Tasks.state_options())
   end
 
   def new(conn, _params) do
@@ -19,8 +19,8 @@ defmodule VbvWeb.TaskController do
         user_id: conn.assigns.current_scope.user.id
       })
 
-    states = Tasks.state_options(conn)
-    categories = Tasks.category_options(conn)
+    states = Tasks.state_options()
+    categories = Tasks.category_options()
 
     render(conn, :new, changeset: changeset, states: states, categories: categories)
   end
@@ -36,8 +36,8 @@ defmodule VbvWeb.TaskController do
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, :new,
           changeset: changeset,
-          states: Tasks.state_options(conn),
-          categories: Tasks.category_options(conn)
+          states: Tasks.state_options(),
+          categories: Tasks.category_options()
         )
     end
   end
@@ -61,8 +61,8 @@ defmodule VbvWeb.TaskController do
     render(conn, :edit,
       changeset: changeset,
       task: task,
-      states: Tasks.state_options(conn),
-      categories: Tasks.category_options(conn)
+      states: Tasks.state_options(),
+      categories: Tasks.category_options()
     )
   end
 
@@ -79,8 +79,8 @@ defmodule VbvWeb.TaskController do
         render(conn, :edit,
           task: task,
           changeset: changeset,
-          states: Tasks.state_options(conn),
-          categories: Tasks.category_options(conn)
+          states: Tasks.state_options(),
+          categories: Tasks.category_options()
         )
     end
   end
