@@ -10,7 +10,7 @@ defmodule Vbv.TasksFixtures do
   def task_fixture(scope, attrs \\ %{}) do
     attrs =
       Enum.into(attrs, %{
-        deadline: ~D[2025-11-29],
+        start_date: ~D[2025-11-29],
         description: "some description",
         name: "some name"
       })

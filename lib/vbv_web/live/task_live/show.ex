@@ -24,7 +24,7 @@ defmodule VbvWeb.TaskLive.Show do
       <.list>
         <:item title="Name">{@task.name}</:item>
         <:item title="Description">{@task.description}</:item>
-        <:item title="Deadline">{@task.deadline}</:item>
+        <:item title="Start date">{@task.start_date}</:item>
         <:item title="Category"><.category task={@task} /></:item>
         <:item title="State"><.state task={@task} /></:item>
       </.list>

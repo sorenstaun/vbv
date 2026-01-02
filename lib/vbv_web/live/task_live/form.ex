@@ -16,7 +16,7 @@ defmodule VbvWeb.TaskLive.Form do
       <.form for={@form} id="task-form" phx-change="validate" phx-submit="save">
         <.input field={@form[:name]} type="text" label="Name" />
         <.input field={@form[:description]} type="textarea" label="Description" />
-        <.input field={@form[:deadline]} type="date" label="Deadline" />
+        <.input field={@form[:start_date]} type="date" label="Start date" />
 
         <.input type="radiogroup"
           field={@form[:state_id]}
@@ -43,19 +43,7 @@ defmodule VbvWeb.TaskLive.Form do
         />
 
         <.input
-          field={@form[:interval]}
-          type="number"
-          label="Interval"
-          value="1"
-        />
-        <input type="number" name="interval" value="1" min="1" />
-
-        <div :if={@form.params["freq"] == "WEEKLY"}>
-          Weekly!
-        </div>
-
-        <.input
-          :if={@form.params["freq"] == "WEEKLY"}
+          :if={@form.params["freq"] == "DAILY"}
           field={@form[:byday]}
           type="checkgroup"
           label="Select Days of the Week"
@@ -69,6 +57,19 @@ defmodule VbvWeb.TaskLive.Form do
             {"Sunday", "SU"}
           ]}
         />
+
+        <.input
+        :if={@form.params["freq"] in ["MONTHLY", "YEARLY","WEEKLY"]}
+          field={@form[:interval]}
+          type="number"
+          label="Interval"
+          value="1"
+        />
+        <input type="number" name="interval" value="1" min="1" />
+
+        <div :if={@form.params["freq"] == "WEEKLY"}>
+          Weekly!
+        </div>
 
         <.input
           :if={@task.user_id == @current_scope.user.id}

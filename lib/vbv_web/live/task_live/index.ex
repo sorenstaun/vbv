@@ -23,7 +23,7 @@ defmodule VbvWeb.TaskLive.Index do
         row_click={fn {_id, task} -> JS.navigate(~p"/tasks/#{task}") end}
       >
         <:col :let={{_id, task}} label="Name">{task.name}<.icon :if={task.private} name="hero-lock-closed"/></:col>
-        <:col :let={{_id, task}} label="Deadline">{task.deadline}</:col>
+        <:col :let={{_id, task}} label="Start date">{task.start_date}</:col>
         <:col :let={{_id, task}} label="Category"><.category task={task} /></:col>
         <:col :let={{_id, task}} label="State"><.state task={task} /></:col>
         <:action :let={{_id, task}}>

@@ -286,7 +286,7 @@ defmodule VbvWeb.CoreComponents do
                 id={"#{@name}-#{value}"}
                 name={@name}
                 value={value}
-                checked={value in @value}
+                checked={value == @value}
                 class="mr-2 h-4 w-4 rounded ..."
                 {@rest}
               />

@@ -1,7 +1,7 @@
 <.form :let={form} for={@changeset} action={@action}>
   <.input field={form[:name]} type="text" label="Name" />
   <.input field={form[:description]} type="textarea" label="Description" />
-  <.input field={form[:deadline]} type="date" label="Deadline" />
+  <.input field={form[:start_date]} type="date" label="Start date" />
 
   <.input
     field={form[:state_id]}

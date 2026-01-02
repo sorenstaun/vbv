@@ -9,7 +9,7 @@ defmodule Vbv.TasksTest do
     import Vbv.UsersFixtures, only: [user_scope_fixture: 0]
     import Vbv.TasksFixtures
 
-    @invalid_attrs %{name: nil, description: nil, deadline: nil}
+    @invalid_attrs %{name: nil, description: nil, start_date: nil}
 
     test "list_tasks/1 returns all scoped tasks" do
       scope = user_scope_fixture()
@@ -32,7 +32,7 @@ defmodule Vbv.TasksTest do
       valid_attrs = %{
         name: "some name",
         description: "some description",
-        deadline: ~D[2025-11-29]
+        start_date: ~D[2025-11-29]
       }
 
       scope = user_scope_fixture()
@@ -40,7 +40,7 @@ defmodule Vbv.TasksTest do
       assert {:ok, %Task{} = task} = Tasks.create_task(scope, valid_attrs)
       assert task.name == "some name"
       assert task.description == "some description"
-      assert task.deadline == ~D[2025-11-29]
+      assert task.start_date == ~D[2025-11-29]
       assert task.user_id == scope.user.id
     end
 
@@ -56,13 +56,13 @@ defmodule Vbv.TasksTest do
       update_attrs = %{
         name: "some updated name",
         description: "some updated description",
-        deadline: ~D[2025-11-30]
+        start_date: ~D[2025-11-30]
       }
 
       assert {:ok, %Task{} = task} = Tasks.update_task(scope, task, update_attrs)
       assert task.name == "some updated name"
       assert task.description == "some updated description"
-      assert task.deadline == ~D[2025-11-30]
+      assert task.start_date == ~D[2025-11-30]
     end
 
     test "update_task/3 with invalid scope raises" do

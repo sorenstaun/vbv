@@ -3,13 +3,13 @@ defmodule VbvWeb.TaskControllerTest do
 
   import Vbv.TasksFixtures
 
-  @create_attrs %{name: "some name", description: "some description", deadline: ~D[2025-11-29]}
+  @create_attrs %{name: "some name", description: "some description", start_date: ~D[2025-11-29]}
   @update_attrs %{
     name: "some updated name",
     description: "some updated description",
-    deadline: ~D[2025-11-30]
+    start_date: ~D[2025-11-30]
   }
-  @invalid_attrs %{name: nil, description: nil, deadline: nil}
+  @invalid_attrs %{name: nil, description: nil, start_date: nil}
 
   setup :register_and_log_in_user
 

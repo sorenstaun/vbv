@@ -10,7 +10,7 @@
 
   <.table id="tasks" rows={@tasks} row_click={&JS.navigate(~p"/tasks/#{&1}")}>
     <:col :let={task} label="Name">{task.name}</:col>
-    <:col :let={task} label="Deadline">{task.deadline}</:col>
+    <:col :let={task} label="Start date">{task.start_date}</:col>
     <:col :let={task} label="Category">
       <.category task={task} />
     </:col>
