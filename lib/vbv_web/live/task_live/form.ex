@@ -34,29 +34,10 @@ defmodule VbvWeb.TaskLive.Form do
           />
         </div>
 
-        <.input field={@form[:description]} type="textarea" label="Description" />
-        <div class="mb-4 grid grid-cols-4 gap-6">
-          <.input field={@form[:start_date]} type="date" label="Start date" />
-          <.input field={@form[:start_time]} type="time" label="Start time" />
-          <.input field={@form[:end_date]} type="date" label="End date" />
-          <.input field={@form[:end_time]} type="time" label="End time" />
-
-          <.input
-            type="select"
-            field={@form[:state_id]}
-            label="State"
-            options={@states}
-          />
-          <.input
-            type="select"
-            field={@form[:category_id]}
-            label="Category"
-            options={@categories}
-          />
-        </div>
+        <!-- Recurrence Rule Settings -->
 
         <div
-          :if={@form[:recurring].value == true}
+          :if={@form[:recurring].value == true or @form[:recurring].value == "true"}
           class="grid grid-cols-4 gap-6 bg-gray-300 p-4 rounded"
         >
           <label class="col-span-4 font-bold">Recurrence Rule Settings</label>
@@ -102,9 +83,33 @@ defmodule VbvWeb.TaskLive.Form do
           </div>
 
           <div class="mt-4 p-2 bg-gray-100 font-mono">
-            Generated Rule: <!--{@changeset.data.rrule}-->
+            Generated Rule: {@form.params["rrule"]}
           </div>
         </div>
+
+        <!-- Other fields for tasks -->
+
+        <.input field={@form[:description]} type="textarea" label="Description" />
+        <div class="mb-4 grid grid-cols-4 gap-6">
+          <.input field={@form[:start_date]} type="date" label="Start date" />
+          <.input field={@form[:start_time]} type="time" label="Start time" />
+          <.input field={@form[:end_date]} type="date" label="End date" />
+          <.input field={@form[:end_time]} type="time" label="End time" />
+
+          <.input
+            type="select"
+            field={@form[:state_id]}
+            label="State"
+            options={@states}
+          />
+          <.input
+            type="select"
+            field={@form[:category_id]}
+            label="Category"
+            options={@categories}
+          />
+        </div>
+
 
         <footer>
           <.button phx-disable-with="Saving..." variant="primary">Save Task</.button>
@@ -156,7 +161,17 @@ defmodule VbvWeb.TaskLive.Form do
 
   @impl true
   def handle_event("validate", %{"task" => task_params}, socket) do
-    changeset = Tasks.change_task(socket.assigns.current_scope, socket.assigns.task, task_params)
+    private_value = socket.assigns.form[:private].value
+    recurring_value = socket.assigns.form[:recurring].value
+
+    changeset =
+      Tasks.change_task(socket.assigns.current_scope, socket.assigns.task,
+      Map.merge(%{
+        "private" => private_value,
+        "recurring" => recurring_value},
+        task_params)
+      )
+
     {:noreply, assign(socket, form: to_form(Map.put(changeset, :action, :validate)))}
   end
 

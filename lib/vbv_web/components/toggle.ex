@@ -2,6 +2,16 @@ defmodule VbvWeb.Components.Toggle do
   use Phoenix.Component
 
   def render(assigns) do
+
+    # Normalize toggled value to boolean
+    toggle = assigns.toggled
+    assigns =
+      if toggle == "true" || toggle == true do
+        assign(assigns, :toggled, true)
+      else
+        assign(assigns, :toggled, false)
+      end
+
     ~H"""
     <label class="fieldset mb-2">
       <span :if={@label} class="label mb-1">{@label}</span>
@@ -26,7 +36,12 @@ defmodule VbvWeb.Components.Toggle do
         </span>
       </span>
       <!-- Hidden input to integrate with forms -->
-      <input type="hidden" name={@field && @field.name} value={@toggled && "true" || "false"} id={"#{@id}-hidden"} />
+      <input
+        type="hidden"
+        name={@field && @field.name}
+        value={(@toggled && "true") || "false"}
+        id={"#{@id}-hidden"}
+      />
       <!--VbvWeb.CoreComponents.input
         class="visibly-hidden collapse"
         type="checkbox"
