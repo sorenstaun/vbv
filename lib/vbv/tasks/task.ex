@@ -30,7 +30,7 @@ defmodule Vbv.Tasks.Task do
   @doc false
   def changeset(task, attrs, user_scope) do
     task
-    |> cast(attrs, [:name, :description, :start_date, :state_id, :category_id, :rrule, :private])
+    |> cast(attrs, [:name, :description, :start_date, :start_time, :end_date, :end_time, :state_id, :category_id, :rrule, :private, :recurring])
     |> validate_required([:name, :description, :start_date])
     |> put_change(:user_id, user_scope.user.id)
   end
