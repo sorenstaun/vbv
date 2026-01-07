@@ -1,4 +1,4 @@
-defmodule Vbv.Repo.Migrations.AddRrulePrivateToTasks do
+defmodule Vbv.Repo.Migrations.ExtendWithCalendarFieldsTasks do
   use Ecto.Migration
 
   def change do
@@ -9,6 +9,6 @@ defmodule Vbv.Repo.Migrations.AddRrulePrivateToTasks do
       add :end_time, :time
     end
 
-    rename table("tasks"), :start_date, to: :start_date
+    rename table("tasks"), :deadline, to: :start_date
   end
 end
