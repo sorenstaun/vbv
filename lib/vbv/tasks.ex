@@ -131,7 +131,6 @@ defmodule Vbv.Tasks do
 
   """
   def update_task(%Scope{} = scope, %Task{} = task, attrs) do
-    true = task.user_id == scope.user.id
 
     with {:ok, task = %Task{}} <-
            task
