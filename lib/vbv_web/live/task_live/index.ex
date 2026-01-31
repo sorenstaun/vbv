@@ -112,7 +112,7 @@ defmodule VbvWeb.TaskLive.Index do
      )}
   end
 
-  def list_tasks(current_scope, sort_by \\ :name, sort_order \\ :asc, reset \\ false) do
+  def list_tasks(current_scope, sort_by \\ :name, sort_order \\ :asc, _reset \\ false) do
     Tasks.list_tasks(current_scope, sort_by, sort_order)
   end
 
@@ -121,15 +121,15 @@ defmodule VbvWeb.TaskLive.Index do
     assigns = %{label: label, field: field, sort_by: sort_by, sort_order: sort_order}
 
     ~H"""
-    <span class="cursor-pointer select-none" phx-click={JS.push("sort", value: %{by: field})}>
-      {label}
+    <span class="cursor-pointer select-none" phx-click={JS.push("sort", value: %{by: @field})}>
+      {@label}
       <.icon
-        :if={sort_by == field and sort_order == :asc}
+        :if={@sort_by == @field and @sort_order == :asc}
         name="hero-arrow-up"
         class="inline w-4 h-4"
       />
       <.icon
-        :if={sort_by == field and sort_order == :desc}
+        :if={@sort_by == @field and @sort_order == :desc}
         name="hero-arrow-down"
         class="inline w-4 h-4"
       />
