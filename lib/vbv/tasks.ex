@@ -41,11 +41,33 @@ defmodule Vbv.Tasks do
       [%Task{}, ...]
 
   """
-  def list_tasks(%Scope{} = scope) do
+  def list_tasks(%Scope{} = scope, sort_by, sort_order) do
+    sort_field =
+      case sort_by do
+        :name -> :name
+        :start_date -> :start_date
+        :category -> :category_id
+        :state -> :state_id
+        _ -> :name
+      end
+
+    order_by_expr =
+      case sort_order do
+        :asc -> [asc: sort_field]
+        :desc -> [desc: sort_field]
+        _ -> [asc: sort_field]
+      end
+
     Task
     |> where([t], t.user_id == ^scope.user.id or t.private == false)
+    |> order_by(^order_by_expr)
     |> Repo.all()
     |> task_preload()
+  end
+
+  # Keep the original for compatibility
+  def list_tasks(%Scope{} = scope) do
+    list_tasks(scope, :name, :asc)
   end
 
   def get_task!(%Scope{} = scope, id) do
@@ -131,7 +153,6 @@ defmodule Vbv.Tasks do
 
   """
   def update_task(%Scope{} = scope, %Task{} = task, attrs) do
-
     with {:ok, task = %Task{}} <-
            task
            |> Task.changeset(attrs, scope)
