@@ -73,6 +73,8 @@ defmodule VbvWeb.Router do
       live "/tasks/new", TaskLive.Form, :new
       live "/tasks/:id", TaskLive.Show, :show
       live "/tasks/:id/edit", TaskLive.Form, :edit
+
+      get "/changes", ChangesController, :show
     end
 
     post "/users/update-password", UserSessionController, :update_password

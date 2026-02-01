@@ -144,6 +144,14 @@ defmodule VbvWeb.Layouts do
                 conn={Map.get(assigns, :conn)}
                 socket={Map.get(assigns, :socket)}
               />
+              <.topmenu
+                href="/changes"
+                label="HOPE Updates"
+                current_scope={assigns}
+                restricted={true}
+                conn={Map.get(assigns, :conn)}
+                socket={Map.get(assigns, :socket)}
+              />
             </ul>
           </div>
         </div>
