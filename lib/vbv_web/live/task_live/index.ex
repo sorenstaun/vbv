@@ -126,12 +126,10 @@ defmodule VbvWeb.TaskLive.Index do
       <.icon
         :if={@sort_by == @field and @sort_order == :asc}
         name="hero-arrow-up"
-        class="inline w-4 h-4"
       />
       <.icon
         :if={@sort_by == @field and @sort_order == :desc}
         name="hero-arrow-down"
-        class="inline w-4 h-4"
       />
     </span>
     """
