@@ -9,8 +9,7 @@ defmodule VbvWeb.TaskLive.Show do
     ~H"""
     <Layouts.app flash={@flash} current_scope={@current_scope}>
       <.header>
-        Task {@task.id}
-        <:subtitle>This is a task record from your database.</:subtitle>
+        Task: {@task.name}
         <:actions>
           <.button navigate={~p"/tasks"}>
             <.icon name="hero-arrow-left" />
@@ -22,7 +21,6 @@ defmodule VbvWeb.TaskLive.Show do
       </.header>
 
       <.list>
-        <:item title="Name">{@task.name}</:item>
         <:item title="Description">
           <div class="trix-content prose prose-zinc max-w-none format format-zinc">
             {raw(@task.description)}
