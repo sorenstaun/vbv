@@ -34,7 +34,7 @@ defmodule VbvWeb.TaskLive.Form do
           />
         </div>
 
-        <!-- Recurrence Rule Settings -->
+    <!-- Recurrence Rule Settings -->
 
         <div
           :if={@form[:recurring].value == true or @form[:recurring].value == "true"}
@@ -87,9 +87,28 @@ defmodule VbvWeb.TaskLive.Form do
           </div>
         </div>
 
-        <!-- Other fields for tasks -->
+    <!-- Other fields for tasks -->
 
-        <.input field={@form[:description]} type="textarea" label="Description" />
+        <div class="fieldset mb-2">
+          <label><span for="trix-input" class="label mb-1">Description</span></label>
+          <div phx-update="ignore" id="description-editor-wrapper" class="format format-zinc max-w-none">
+            <input
+              id="trix-input"
+              type="hidden"
+              name={@form[:description].name}
+              value={@form[:description].value}
+            />
+            <trix-editor
+              id="description-trix-editor"
+              input="trix-input"
+              phx-hook="TrixEditor"
+              class="trix-content border-zinc-300 rounded-lg shadow-sm min-h-[200px]"
+            >
+            </trix-editor>
+          </div>
+        </div>
+
+        <!--.input field={@form[:description]} type="textarea" label="Description" /-->
         <div class="mb-4 grid grid-cols-4 gap-6">
           <.input field={@form[:start_date]} type="date" label="Start date" />
           <.input field={@form[:start_time]} type="time" label="Start time" />
@@ -109,7 +128,6 @@ defmodule VbvWeb.TaskLive.Form do
             options={@categories}
           />
         </div>
-
 
         <footer>
           <.button phx-disable-with="Saving..." variant="primary">Save Task</.button>
@@ -165,11 +183,16 @@ defmodule VbvWeb.TaskLive.Form do
     recurring_value = socket.assigns.form[:recurring].value
 
     changeset =
-      Tasks.change_task(socket.assigns.current_scope, socket.assigns.task,
-      Map.merge(%{
-        "private" => private_value,
-        "recurring" => recurring_value},
-        task_params)
+      Tasks.change_task(
+        socket.assigns.current_scope,
+        socket.assigns.task,
+        Map.merge(
+          %{
+            "private" => private_value,
+            "recurring" => recurring_value
+          },
+          task_params
+        )
       )
 
     {:noreply, assign(socket, form: to_form(Map.put(changeset, :action, :validate)))}

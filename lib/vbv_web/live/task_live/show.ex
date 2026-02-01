@@ -23,7 +23,11 @@ defmodule VbvWeb.TaskLive.Show do
 
       <.list>
         <:item title="Name">{@task.name}</:item>
-        <:item title="Description">{@task.description}</:item>
+        <:item title="Description">
+          <div class="trix-content prose prose-zinc max-w-none format format-zinc">
+            {raw(@task.description)}
+          </div>
+        </:item>
         <:item title="Start date">{@task.start_date}</:item>
         <:item title="Category"><.category task={@task} /></:item>
         <:item title="State"><.state task={@task} /></:item>

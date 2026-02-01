@@ -4,6 +4,7 @@
     "alpine": "^0.2.1",
     "alpinejs": "^3.15.3",
     "collapse": "^1.0.1",
-    "flowbite": "^4.0.1"
+    "flowbite": "^4.0.1",
+    "trix": "^2.1.16"
   }
 }

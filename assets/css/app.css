@@ -10,6 +10,7 @@
 @import "flowbite/src/themes/default";
 @plugin "flowbite/plugin";
 @import "./flowbite.css";
+@import "trix/dist/trix.css";
 
 /* A Tailwind plugin that makes "hero-#{ICON}" classes available.
    The heroicons installation itself is managed by your mix.exs */

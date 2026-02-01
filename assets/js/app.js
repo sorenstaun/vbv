@@ -28,6 +28,7 @@ import "flowbite/dist/flowbite.phoenix.js";
 
 import Alpine from "alpinejs"
 import collapse from "@alpinejs/collapse"
+import "trix"
 
 // Register the plugin
 Alpine.plugin(collapse)
@@ -35,11 +36,22 @@ Alpine.plugin(collapse)
 window.Alpine = Alpine
 Alpine.start()
 
+// Define the Trix hook
+const TrixEditor = {
+  mounted() {
+    this.el.addEventListener("trix-change", () => {
+      const input = document.getElementById(this.el.getAttribute("input"))
+      input.dispatchEvent(new Event("input", { bubbles: true }))
+      input.dispatchEvent(new Event("change", { bubbles: true }))
+    })
+  }
+}
+
 const csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content")
 const liveSocket = new LiveSocket("/live", Socket, {
   longPollFallbackMs: 2500,
   params: { _csrf_token: csrfToken },
-  hooks: { ...colocatedHooks },
+  hooks: { TrixEditor, ...colocatedHooks },
 })
 
 // Show progress bar on live navigation and form submits
