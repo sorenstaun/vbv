@@ -288,27 +288,23 @@ defmodule VbvWeb.CoreComponents do
 
   def input(%{type: "checkgroup"} = assigns) do
     ~H"""
-    <div phx-feedback-for={@name} class="text-sm">
-      <label for={@id} required={@required}>{@label}</label>
-      <div class="mt-1 w-full bg-white border border-gray-300 ...">
-        <div class="grid grid-cols-1 gap-1 text-sm items-baseline">
-          <input type="hidden" name={@name} value="" />
-          <div :for={{label, value} <- @options} class="...">
-            <label for={"#{@name}-#{value}"} class="...">
-              <input
-                type="checkbox"
-                id={"#{@name}-#{value}"}
-                name={@name}
-                value={value}
-                checked={value == @value}
-                class="mr-2 h-4 w-4 rounded ..."
-                {@rest}
-              />
-              {label}
-            </label>
-          </div>
+    <div class="fieldset mb-2">
+      <label>
+        <span :if={assigns[:label]} class="label mb-1">{@label}</span>
+        <div class="flex flex-wrap gap-2">
+          <%!-- Fix: Use assigns[:required] instead of @required --%>
+          <input
+            :for={{label, val} <- @options}
+            type="checkbox"
+            name={@name <> "[]"}
+            value={val}
+            checked={val in (@value || [])}
+            required={assigns[:required]}
+            class="checkbox"
+          />
+          <span>{assigns[:label]}</span>
         </div>
-      </div>
+      </label>
       <.error :for={msg <- @errors}>{msg}</.error>
     </div>
     """
@@ -347,20 +343,20 @@ defmodule VbvWeb.CoreComponents do
         <input
           type={@type}
           name={@name}
-          id={@id}
+          id={assigns[:id]}
           value={Phoenix.HTML.Form.normalize_value(@type, @value)}
           class={
             [
               # Change @class to assigns[:class]
               assigns[:class] || "w-full input",
               # Change @error_class to assigns[:error_class]
-              @errors != [] && (assigns[:error_class] || "input-error")
+              assigns[:errors] != [] && (assigns[:error_class] || "input-error")
             ]
           }
-          {@rest}
+          {assigns[:rest] || %{}}
         />
       </label>
-      <.error :for={msg <- @errors}>{msg}</.error>
+      <.error :for={msg <- assigns[:errors] || []}>{msg}</.error>
     </div>
     """
   end

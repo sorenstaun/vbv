@@ -21,7 +21,7 @@ defmodule VbvWeb.Components.TaskComponents do
       <span
         role="img"
         aria-label={"Colour: #{@task.state.colour}"}
-        class="w-6 h-6 rounded-full border"
+        class="w-6 h-6 rounded-sm border border-gray-400 bg-gray-200 shadow-[inset_1px_1px_0px_white,inset_-1px_-1px_0px_rgba(0,0,0,0.1)]"
         style={"background-color: #{@task.state.colour}"}
       />&nbsp; {@task.state.name}
     </div>
