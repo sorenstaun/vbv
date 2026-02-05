@@ -19,31 +19,36 @@ defmodule VbvWeb.TaskLive.Index do
 
       <div class="mb-6">
         <form phx-change="filter">
-        <table><tr><td>
-          <.input
-            type="select"
-            field={@filter_form[:state]}
-            label="State"
-            id="filter-state-select"
-            options={[{"All States", ""}] ++ @states}
-            multiple={false}
-            class="flex-1 min-w-[140px] max-w-[200px]"
-            rest={%{name: "filters[state]"}}
-            prompt="Select state"
-          />
-          </td><td class="pl-4">
-          <.input
-            type="select"
-            field={@filter_form[:category]}
-            label="Category"
-            id="filter-category-select"
-            options={[{"All Categories", ""}] ++ @categories}
-            multiple={false}
-            class="flex-1 min-w-[140px] max-w-[200px]"
-            rest={%{name: "filters[category]"}}
-            prompt="Select category"
-          />
-          </td></tr></table>
+          <table>
+            <tr>
+              <td>
+                <.input
+                  type="select"
+                  field={@filter_form[:state]}
+                  label="State"
+                  id="filter-state-select"
+                  options={[{"All States", ""}] ++ @states}
+                  multiple={false}
+                  class="flex-1 min-w-[140px] max-w-[200px]"
+                  rest={%{name: "filters[state]"}}
+                  prompt="Select state"
+                />
+              </td>
+              <td class="pl-4">
+                <.input
+                  type="select"
+                  field={@filter_form[:category]}
+                  label="Category"
+                  id="filter-category-select"
+                  options={[{"All Categories", ""}] ++ @categories}
+                  multiple={false}
+                  class="flex-1 min-w-[140px] max-w-[200px]"
+                  rest={%{name: "filters[category]"}}
+                  prompt="Select category"
+                />
+              </td>
+            </tr>
+          </table>
         </form>
       </div>
 
@@ -177,14 +182,18 @@ defmodule VbvWeb.TaskLive.Index do
         :asc
       end
 
+    filter_form = socket.assigns.filter_form
+
+    IO.inspect(filter_form.params, label: "INDEX handle_params filter_form.params")
+
     filters = %{
-      scope: socket.current_scope,
-      sort_by: socket.sort_by,
-      sort_order: socket.sort_order,
+      scope: socket.assigns.current_scope,
+      sort_by: socket.assigns.sort_by,
+      sort_order: socket.assigns.sort_order,
       active_only: true,
       task_filter: %{
-        "state" => get_in(socket.assigns.filter_form, ["filters", "state"]),
-        "category" => get_in(socket.assigns.filter_form, ["filters", "category"])
+        "state" => filter_form.params["filters"]["state"],
+        "category" => filter_form.params["filters"]["category"]
       }
     }
 
