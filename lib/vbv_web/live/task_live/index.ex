@@ -58,7 +58,17 @@ defmodule VbvWeb.TaskLive.Index do
         row_click={fn {_id, task} -> JS.navigate(~p"/tasks/#{task}") end}
       >
         <:col :let={{_id, task}} label={sort_label("Name", :name, @sort_by, @sort_order)}>
-          {task.name}<.icon :if={task.private} name="hero-lock-closed" />
+          <div class="flex items-center gap-2">
+            <span class="text-base font-semibold text-slate-700 dark:text-slate-200">
+              {task.name}
+            </span>
+
+            <.icon
+              :if={task.private}
+              name="hero-lock-closed-solid"
+              class="w-4 h-4 text-slate-400"
+            />
+          </div>
         </:col>
         <:col :let={{_id, task}} label={sort_label("Start date", :start_date, @sort_by, @sort_order)}>
           {task.start_date}
