@@ -11,7 +11,7 @@ defmodule VbvWeb.CategoryController do
 
   def new(conn, _params) do
     changeset =
-      Categories.change_category(conn.assigns.current_scope, %Category{})
+      Categories.change_category(%Category{})
 
     render(conn, :new, changeset: changeset)
   end
