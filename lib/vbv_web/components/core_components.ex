@@ -182,10 +182,14 @@ defmodule VbvWeb.CoreComponents do
     errors = if Phoenix.Component.used_input?(field), do: field.errors, else: []
 
     assigns
-    |> assign(field: nil, id: assigns.id || field.id)
+    |> assign(field: nil)
+    # Use assigns[:id] instead of assigns.id to prevent crashing
+    |> assign(:id, assigns[:id] || field.id)
     |> assign(:errors, Enum.map(errors, &translate_error(&1)))
-    |> assign_new(:name, fn -> if assigns.multiple, do: field.name <> "[]", else: field.name end)
+    # Use assigns[:multiple] instead of assigns.multiple
+    |> assign_new(:name, fn -> if assigns[:multiple], do: field.name <> "[]", else: field.name end)
     |> assign_new(:value, fn -> field.value end)
+    |> assign_new(:rest, fn -> %{} end)
     |> input()
   end
 
@@ -342,10 +346,14 @@ defmodule VbvWeb.CoreComponents do
           name={@name}
           id={@id}
           value={Phoenix.HTML.Form.normalize_value(@type, @value)}
-          class={[
-            @class || "w-full input",
-            @errors != [] && (@error_class || "input-error")
-          ]}
+          class={
+            [
+              # Change @class to assigns[:class]
+              assigns[:class] || "w-full input",
+              # Change @error_class to assigns[:error_class]
+              @errors != [] && (assigns[:error_class] || "input-error")
+            ]
+          }
           {@rest}
         />
       </label>
