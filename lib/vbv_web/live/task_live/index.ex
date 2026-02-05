@@ -17,6 +17,36 @@ defmodule VbvWeb.TaskLive.Index do
         </:actions>
       </.header>
 
+      <div class="mb-6">
+        <form phx-change="filter">
+        <table><tr><td>
+          <.input
+            type="select"
+            field={@filter_form[:state]}
+            label="State"
+            id="filter-state-select"
+            options={[{"All States", ""}] ++ @states}
+            multiple={false}
+            class="flex-1 min-w-[140px] max-w-[200px]"
+            rest={%{name: "filters[state]"}}
+            prompt="Select state"
+          />
+          </td><td class="pl-4">
+          <.input
+            type="select"
+            field={@filter_form[:category]}
+            label="Category"
+            id="filter-category-select"
+            options={[{"All Categories", ""}] ++ @categories}
+            multiple={false}
+            class="flex-1 min-w-[140px] max-w-[200px]"
+            rest={%{name: "filters[category]"}}
+            prompt="Select category"
+          />
+          </td></tr></table>
+        </form>
+      </div>
+
       <.table
         id="tasks"
         rows={@streams.tasks}
@@ -54,20 +84,78 @@ defmodule VbvWeb.TaskLive.Index do
   end
 
   @impl true
-  def mount(_params, _session, socket) do
+  def mount(params, _session, socket) do
     if connected?(socket) do
       Tasks.subscribe_tasks(socket.assigns.current_scope)
     end
 
+    states = Tasks.state_options()
+    categories = Tasks.category_options()
+
     sort_by = :name
     sort_order = :asc
+
+    defaults = %{"state" => "", "category" => ""}
+    filter_params = Map.merge(defaults, params)
+    filter_form = Phoenix.Component.to_form(filter_params, as: :filters)
+
+    IO.inspect(filter_form, label: "Task list filters")
+
+    filters = %{
+      scope: socket.assigns.current_scope,
+      sort_by: sort_by,
+      sort_order: sort_order,
+      active_only: true,
+      task_filter: %{
+        "state" => filter_form.params["state"],
+        "category" => filter_form.params["category"]
+      }
+    }
 
     {:ok,
      socket
      |> assign(:page_title, "Listing Tasks")
+     |> assign(:states, states)
+     |> assign(:categories, categories)
      |> assign(:sort_by, sort_by)
      |> assign(:sort_order, sort_order)
-     |> stream(:tasks, list_tasks(socket.assigns.current_scope, sort_by, sort_order))}
+     |> assign(:filter_form, filter_form)
+     |> stream(:tasks, list_tasks(filters))}
+  end
+
+  @impl true
+  def handle_params(params, _url, socket) do
+    # 1. Update the form struct so the dropdowns show the selected value
+    filter_form = Phoenix.Component.to_form(params, as: :filters)
+
+    IO.inspect(filter_form.params, label: "INDEX handle_params filter_form.params")
+
+    filters = %{
+      scope: socket.assigns.current_scope,
+      sort_by: socket.assigns.sort_by,
+      sort_order: socket.assigns.sort_order,
+      active_only: true,
+      task_filter: %{
+        "state" => filter_form.params["filters"]["state"],
+        "category" => filter_form.params["filters"]["category"]
+      }
+    }
+
+    # 2. Fetch the data using the params from the URL
+    tasks =
+      list_tasks(filters)
+
+    {:noreply,
+     socket
+     |> assign(:filter_form, filter_form)
+     # reset: true is key for streams!
+     |> stream(:tasks, tasks, reset: true)}
+  end
+
+  @impl true
+  def handle_event("filter", params, socket) do
+    # Just update the URL. Phoenix then calls handle_params automatically.
+    {:noreply, push_patch(socket, to: ~p"/tasks?#{params}")}
   end
 
   @impl true
@@ -89,31 +177,51 @@ defmodule VbvWeb.TaskLive.Index do
         :asc
       end
 
+    filters = %{
+      scope: socket.current_scope,
+      sort_by: socket.sort_by,
+      sort_order: socket.sort_order,
+      active_only: true,
+      task_filter: %{
+        "state" => get_in(socket.assigns.filter_form, ["filters", "state"]),
+        "category" => get_in(socket.assigns.filter_form, ["filters", "category"])
+      }
+    }
+
     {:noreply,
      socket
      |> assign(:sort_by, by)
      |> assign(:sort_order, order)
-     |> stream(:tasks, list_tasks(socket.assigns.current_scope, by, order, true), reset: true)}
+     |> stream(:tasks, list_tasks(filters), reset: true)}
   end
 
   @impl true
   def handle_info({type, %Vbv.Tasks.Task{}}, socket)
       when type in [:created, :updated, :deleted] do
+    filters = %{
+      scope: socket.current_scope,
+      sort_by: socket.sort_by,
+      sort_order: socket.sort_order,
+      active_only: true,
+      task_filter: %{
+        "state" => get_in(socket.assigns.filter_form, ["filters", "state"]),
+        "category" => get_in(socket.assigns.filter_form, ["filters", "category"])
+      }
+    }
+
     {:noreply,
      stream(
        socket,
        :tasks,
-       list_tasks(
-         socket.assigns.current_scope,
-         socket.assigns.sort_by,
-         socket.assigns.sort_order
-       ),
+       list_tasks(filters),
        reset: true
      )}
   end
 
-  def list_tasks(current_scope, sort_by \\ :name, sort_order \\ :asc, _reset \\ false) do
-    Tasks.list_tasks(current_scope, sort_by, sort_order)
+  def list_tasks(filters) do
+    IO.inspect(filters, label: "INDEX Task list filters")
+
+    Tasks.list_tasks(filters)
   end
 
   # Helper for sortable column labels

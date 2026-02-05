@@ -41,7 +41,12 @@ defmodule Vbv.Tasks do
       [%Task{}, ...]
 
   """
-  def list_tasks(%Scope{} = scope, sort_by, sort_order) do
+  def list_tasks(filters \\ %{}) do
+    sort_by = Map.get(filters, :sort_by, :name)
+    sort_order = Map.get(filters, :sort_order, :asc)
+    scope = Map.get(filters, :scope)
+    filters = Map.get(filters, :task_filter, %{})
+
     sort_field =
       case sort_by do
         :name -> :name
@@ -58,17 +63,24 @@ defmodule Vbv.Tasks do
         _ -> [asc: sort_field]
       end
 
+    IO.inspect(filters, label: "Task list filters")
+
     Task
     |> where([t], t.user_id == ^scope.user.id or t.private == false)
     |> order_by(^order_by_expr)
+    |> filter_by_state(Map.get(filters, "state"))
+    |> filter_by_category(Map.get(filters, "category"))
     |> Repo.all()
     |> task_preload()
   end
 
-  # Keep the original for compatibility
-  def list_tasks(%Scope{} = scope) do
-    list_tasks(scope, :name, :asc)
-  end
+  # If the param is empty/missing, return the query as-is
+  defp filter_by_state(query, state) when state in ["", nil], do: query
+  # If it's a number (ID), filter by it
+  defp filter_by_state(query, state), do: where(query, state_id: ^state)
+
+  defp filter_by_category(query, cat) when cat in ["", nil], do: query
+  defp filter_by_category(query, cat), do: where(query, category_id: ^cat)
 
   def get_task!(%Scope{} = scope, id) do
     user_id = scope.user.id
