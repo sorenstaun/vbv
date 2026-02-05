@@ -228,11 +228,14 @@ defmodule VbvWeb.CoreComponents do
         <select
           id={@id}
           name={@name}
-          class={[@class || "w-full select", @errors != [] && (@error_class || "select-error")]}
-          multiple={@multiple}
-          {@rest}
+          class={[
+            assigns[:class] || "w-full select",
+            @errors != [] && (assigns[:error_class] || "select-error")
+          ]}
+          multiple={assigns[:multiple] || false}
+          {assigns[:rest] || %{}}
         >
-          <option :if={@prompt} value="">{@prompt}</option>
+          <option :if={assigns[:prompt]} value="">{@prompt}</option>
           {Phoenix.HTML.Form.options_for_select(@options, @value)}
         </select>
       </label>
