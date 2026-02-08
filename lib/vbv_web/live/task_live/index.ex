@@ -55,7 +55,7 @@ defmodule VbvWeb.TaskLive.Index do
       <.table
         id="tasks"
         rows={@streams.tasks}
-        row_click={fn {_id, task} -> JS.navigate(~p"/tasks/#{task}") end}
+        row_click={fn {_id, task} -> JS.navigate(~p"/tasks/#{task}/edit") end}
       >
         <:col :let={{_id, task}} label={sort_label("Name", :name, @sort_by, @sort_order)}>
           <div class="flex items-center gap-2">
@@ -79,18 +79,12 @@ defmodule VbvWeb.TaskLive.Index do
         <:col :let={{_id, task}} label={sort_label("State", :state, @sort_by, @sort_order)}>
           <.state task={task} />
         </:col>
-        <:action :let={{_id, task}}>
-          <div class="sr-only">
-            <.link navigate={~p"/tasks/#{task}"}>Show</.link>
-          </div>
-          <.link navigate={~p"/tasks/#{task}/edit"}>Edit</.link>
-        </:action>
         <:action :let={{id, task}}>
           <.link
             phx-click={JS.push("delete", value: %{id: task.id}) |> hide("##{id}")}
             data-confirm="Are you sure?"
           >
-            Delete
+            <.icon name="hero-trash" class="w-5 h-5 text-red-600 hover:text-red-800" />
           </.link>
         </:action>
       </.table>
