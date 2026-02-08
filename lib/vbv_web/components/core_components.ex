@@ -286,25 +286,33 @@ defmodule VbvWeb.CoreComponents do
     """
   end
 
-  def input(%{type: "checkgroup"} = assigns) do
+  def input(%{type: "weekselector"} = assigns) do
     ~H"""
-    <div class="fieldset mb-2">
-      <label>
-        <span :if={assigns[:label]} class="label mb-1">{@label}</span>
-        <div class="flex flex-wrap gap-2">
-          <%!-- Fix: Use assigns[:required] instead of @required --%>
+    <div class="mb-4">
+      <span :if={@label} class="label mb-1">
+        {@label}
+      </span>
+
+      <div class="flex flex-row justify-between items-center gap-1 sm:gap-4 rounded-lg p-3 bg-zinc-50/50">
+        <label
+          :for={{opt_label, val} <- @options}
+          class="flex flex-col items-center gap-1 cursor-pointer group"
+        >
+          <%!-- Abbreviate the label to 2 chars --%>
+          <span class="text-[12px] uppercase font-bold text-zinc-500 group-hover:text-zinc-900">
+            {String.slice("#{opt_label}", 0, 3)}
+          </span>
+
           <input
-            :for={{label, val} <- @options}
             type="checkbox"
             name={@name <> "[]"}
             value={val}
             checked={val in (@value || [])}
-            required={assigns[:required]}
-            class="checkbox"
+            class="checkbox rounded-md border-zinc-300 text-zinc-900 focus:ring-zinc-900 w-5 h-5"
           />
-          <span>{assigns[:label]}</span>
-        </div>
-      </label>
+        </label>
+      </div>
+
       <.error :for={msg <- @errors}>{msg}</.error>
     </div>
     """

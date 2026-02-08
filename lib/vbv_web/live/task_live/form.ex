@@ -41,23 +41,28 @@ defmodule VbvWeb.TaskLive.Form do
           class="grid grid-cols-4 gap-6 bg-gray-300 p-4 rounded"
         >
           <label class="col-span-4 font-bold">Recurrence Rule Settings</label>
+          <table class="w-auto border-separate border-spacing-2"><tr>
+          <td>
+          <.input label="Repeat every" type="number" name="interval" value="1" min="1" class="w-48"/>
+          </td><td>
           <.input
             field={@form[:freq]}
             type="select"
+            class="w-48"
             label="Frequency"
             options={[
-              {"Repeat Daily", "DAILY"},
-              {"Repeat Weekly", "WEEKLY"},
-              {"Repeat Monthly", "MONTHLY"},
-              {"Repeat Yearly", "YEARLY"}
+              {"Day", "DAILY"},
+              {"Week", "WEEKLY"},
+              {"Month", "MONTHLY"},
+              {"Year", "YEARLY"}
             ]}
           />
-          <.input label="Repeat every" type="number" name="interval" value="1" min="1" />
-
+          </td><td class="gap-6">
           <.input
-            :if={@form.params["freq"] == "DAILY"}
+            :if={@form[:freq].value == "WEEKLY"}
             field={@form[:byday]}
-            type="checkgroup"
+            type="weekselector"
+            class="w-96"
             label="Select Days of the Week"
             options={[
               {"Monday", "MO"},
@@ -69,23 +74,12 @@ defmodule VbvWeb.TaskLive.Form do
               {"Sunday", "SU"}
             ]}
           />
-
-          <.input
-            :if={@form.params["freq"] in ["MONTHLY", "YEARLY", "WEEKLY"]}
-            field={@form[:interval]}
-            type="number"
-            label="Interval"
-            value="1"
-          />
-
-          <div :if={@form.params["freq"] == "WEEKLY"}>
-            Weekly!
-          </div>
+          </td></tr></table>
+        </div>
 
           <div class="mt-4 p-2 bg-gray-100 font-mono">
-            Generated Rule: {@form.params["rrule"]}
+             <.input field={@form[:rrule]} type="text" label="" readonly />
           </div>
-        </div>
 
     <!-- Other fields for tasks -->
 
@@ -178,7 +172,7 @@ defmodule VbvWeb.TaskLive.Form do
   end
 
   @impl true
-  def handle_event("validate", %{"task" => task_params}, socket) do
+  def handle_event("validate", %{"task" => task}, socket) do
     private_value = socket.assigns.form[:private].value
     recurring_value = socket.assigns.form[:recurring].value
 
@@ -189,9 +183,9 @@ defmodule VbvWeb.TaskLive.Form do
         Map.merge(
           %{
             "private" => private_value,
-            "recurring" => recurring_value
+            "recurring" => recurring_value,
           },
-          task_params
+          task
         )
       )
 
@@ -224,8 +218,6 @@ defmodule VbvWeb.TaskLive.Form do
         "recurring" => current_value,
         "private" => private_value
       })
-
-    IO.inspect(changeset, label: "Changeset in toggle_recurring")
 
     {:noreply, assign(socket, form: to_form(changeset))}
   end

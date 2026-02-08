@@ -63,8 +63,6 @@ defmodule Vbv.Tasks do
         _ -> [asc: sort_field]
       end
 
-    IO.inspect(filters, label: "Task list filters")
-
     Task
     |> where([t], t.user_id == ^scope.user.id or t.private == false)
     |> order_by(^order_by_expr)
@@ -184,6 +182,7 @@ defmodule Vbv.Tasks do
 
   """
   def change_task(%Scope{} = scope, %Task{} = task, attrs \\ %{}) do
+
     Task.changeset(task, attrs, scope)
   end
 end

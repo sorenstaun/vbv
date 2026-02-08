@@ -114,8 +114,6 @@ defmodule VbvWeb.TaskLive.Index do
     filter_params = Map.merge(defaults, params)
     filter_form = Phoenix.Component.to_form(filter_params, as: :filters)
 
-    IO.inspect(filter_form, label: "Task list filters")
-
     filters = %{
       scope: socket.assigns.current_scope,
       sort_by: sort_by,
@@ -142,8 +140,6 @@ defmodule VbvWeb.TaskLive.Index do
   def handle_params(params, _url, socket) do
     # 1. Update the form struct so the dropdowns show the selected value
     filter_form = Phoenix.Component.to_form(params, as: :filters)
-
-    IO.inspect(filter_form.params, label: "INDEX handle_params filter_form.params")
 
     filters = %{
       scope: socket.assigns.current_scope,
@@ -194,8 +190,6 @@ defmodule VbvWeb.TaskLive.Index do
 
     filter_form = socket.assigns.filter_form
 
-    IO.inspect(filter_form.params, label: "INDEX handle_params filter_form.params")
-
     filters = %{
       scope: socket.assigns.current_scope,
       sort_by: socket.assigns.sort_by,
@@ -238,8 +232,6 @@ defmodule VbvWeb.TaskLive.Index do
   end
 
   def list_tasks(filters) do
-    IO.inspect(filters, label: "INDEX Task list filters")
-
     Tasks.list_tasks(filters)
   end
 
