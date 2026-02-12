@@ -20,6 +20,8 @@ config :vbv, :scopes,
     test_setup_helper: :register_and_log_in_user
   ]
 
+config :vbv, ash_domains: [Vbv]
+
 config :vbv,
   ecto_repos: [Vbv.Repo],
   generators: [timestamp_type: :utc_datetime]

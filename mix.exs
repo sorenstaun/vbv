@@ -40,7 +40,11 @@ defmodule Vbv.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
+      {:ash, "~> 3.0"},
+      {:ash_phoenix, "~> 2.0"},
+      {:ash_postgres, "~> 2.0"},
       {:bcrypt_elixir, "~> 3.0"},
+      {:calendar_component, "~> 0.2.1"},
       {:phoenix, "~> 1.8.1"},
       {:phoenix_ecto, "~> 4.5"},
       {:ecto_sql, "~> 3.13"},
@@ -66,6 +70,7 @@ defmodule Vbv.MixProject do
       {:gettext, "~> 0.26"},
       {:jason, "~> 1.2"},
       {:dns_cluster, "~> 0.2.0"},
+      {:igniter, "~> 0.3", only: [:dev]},
       {:bandit, "~> 1.5"}
     ]
   end

@@ -94,12 +94,8 @@ defmodule VbvWeb.TaskLive.Index do
 
   @impl true
   def mount(params, _session, socket) do
-    if connected?(socket) do
-      Tasks.subscribe_tasks(socket.assigns.current_scope)
-    end
-
-    states = Tasks.state_options()
-    categories = Tasks.category_options()
+    states = Ash.read!(Vbv.State, domain: Vbv)
+    categories = Ash.read!(Vbv.Category, domain: Vbv)
 
     sort_by = :name
     sort_order = :asc
@@ -122,8 +118,8 @@ defmodule VbvWeb.TaskLive.Index do
     {:ok,
      socket
      |> assign(:page_title, "Listing Tasks")
-     |> assign(:states, states)
-     |> assign(:categories, categories)
+     |> assign(:states, Enum.map(states, &{&1.name, &1.id}))
+     |> assign(:categories, Enum.map(categories, &{&1.name, &1.id}))
      |> assign(:sort_by, sort_by)
      |> assign(:sort_order, sort_order)
      |> assign(:filter_form, filter_form)
@@ -165,8 +161,8 @@ defmodule VbvWeb.TaskLive.Index do
 
   @impl true
   def handle_event("delete", %{"id" => id}, socket) do
-    task = Tasks.get_task!(socket.assigns.current_scope, id)
-    {:ok, _} = Tasks.delete_task(socket.assigns.current_scope, task)
+    task = Vbv.get_task!(id, actor: socket.assigns.current_scope)
+    :ok = Vbv.delete_task(task.id, actor: socket.assigns.current_scope)
 
     {:noreply, stream_delete(socket, :tasks, task)}
   end
@@ -225,9 +221,36 @@ defmodule VbvWeb.TaskLive.Index do
      )}
   end
 
-  def list_tasks(filters) do
-    Tasks.list_tasks(filters)
-  end
+ def list_tasks(filters \\ %{}, actor) do
+  require Ash.Query # Ensure this is at the top of the function or module
+
+  category_name = Map.get(filters, "category")
+  state_name = Map.get(filters, "state")
+
+  query =
+    Vbv.Task
+    |> Ash.Query.for_read(:read, %{}, actor: actor)
+
+  # Use the query as the first argument to the macro explicitly
+  query =
+    if category_name != "" and !is_nil(category_name) do
+      Ash.Query.filter(query, category.name == ^category_name)
+    else
+      query
+    end
+
+  query =
+    if state_name != "" and !is_nil(state_name) do
+      Ash.Query.filter(query, state.name == ^state_name)
+    else
+      query
+    end
+
+  query
+  |> Ash.Query.sort([{filters[:sort_by] || :name, filters[:sort_order] || :asc}])
+  |> Ash.Query.load([:state, :category])
+  |> Ash.read!()
+end
 
   # Helper for sortable column labels
   defp sort_label(label, field, sort_by, sort_order) do

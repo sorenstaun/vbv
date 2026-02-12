@@ -1,9 +1,23 @@
 defmodule Vbv do
-  @moduledoc """
-  Vbv keeps the contexts that define your domain
-  and business logic.
+  use Ash.Domain
 
-  Contexts are also responsible for managing your data, regardless
-  if it comes from the database, an external API or others.
-  """
+  resources do
+    # Igniter is trying to add these for you:
+
+    resource(Vbv.Category)
+
+    resource(Vbv.State)
+
+    resource Vbv.Task do
+      define(:create_task, action: :create)
+      define(:read_tasks, action: :read)
+      define(:get_task, action: :read, get_by: :id)
+      define(:update_task, action: :update)
+      define(:delete_task, action: :destroy)
+    end
+
+    resource(Vbv.User)
+
+    resource(Vbv.UsersToken)
+  end
 end

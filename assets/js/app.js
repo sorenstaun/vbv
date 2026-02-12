@@ -30,6 +30,9 @@ import Alpine from "alpinejs"
 import collapse from "@alpinejs/collapse"
 import "trix"
 
+// Calender Component Hook
+import CalendarHooks from "calendar_component"
+
 // Register the plugin
 Alpine.plugin(collapse)
 
@@ -51,7 +54,7 @@ const csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute
 const liveSocket = new LiveSocket("/live", Socket, {
   longPollFallbackMs: 2500,
   params: { _csrf_token: csrfToken },
-  hooks: { TrixEditor, ...colocatedHooks },
+  hooks: { TrixEditor, ...colocatedHooks, ...CalendarHooks },
 })
 
 // Show progress bar on live navigation and form submits

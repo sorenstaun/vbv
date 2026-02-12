@@ -73,6 +73,7 @@ defmodule VbvWeb.Router do
       live "/tasks/new", TaskLive.Form, :new
       live "/tasks/:id", TaskLive.Show, :show
       live "/tasks/:id/edit", TaskLive.Form, :edit
+      live "/calendar", CalendarLive.Index, :index
 
       get "/changes", ChangesController, :show
     end
